@@ -1,37 +1,41 @@
-package com.leeheejin.myproject;
+package com.leeheejin.myproject.handler;
 
 import java.sql.Date;
+import com.leeheejin.myproject.Menu;
+import com.leeheejin.util.Prompt;
 
 public class DogHandler {
-
+  static class Dog {
+    int ids;
+    String photos;
+    String breeds;
+    String genders;
+    int ages;
+    Date dates;
+    String places;
+    String status;
+  }
   final static int LENGTH = 100;
-  static int[] ids = new int[LENGTH];
-  static String[] photos = new String[LENGTH];
-  static String[] breeds = new String[LENGTH];
-  static String[] genders = new String[LENGTH];
-  static int[] ages = new int[LENGTH];
-  static Date[] dates = new Date[LENGTH];
-  static String[] places = new String[LENGTH];
-  static String[] status = new String[LENGTH];
+  static Dog[] dogs = new Dog[LENGTH];
   static int size = 0;
 
-  static void add() {
+  public static void add() {
     System.out.println("ㄴ<개 구조>");
-
-    ids[size] = size + 1;
-    System.out.printf("  [%d]\n",ids[size]);
-    photos[size] = Prompt.inputString("  사진? ");
-    breeds[size] = Prompt.inputString("  품종? ");
-    genders[size] = Prompt.inputString("  성별? ");
-    ages[size] = Prompt.inputInt("  나이? ");
-    dates[size] = Prompt.inputDate("  구조일? ");
-    places[size] = Prompt.inputString("  구조장소? ");
-    status[size] = "신규";
+    Dog d = new Dog();
+    d.ids = size + 1;
+    System.out.printf("  [%d]\n",d.ids);
+    d.photos = Prompt.inputString("  사진? ");
+    d.breeds = Prompt.inputString("  품종? ");
+    d.genders = Prompt.inputString("  성별? ");
+    d.ages = Prompt.inputInt("  나이? ");
+    d.dates = Prompt.inputDate("  구조일? ");
+    d.places = Prompt.inputString("  구조장소? ");
+    d.status = "신규";
     System.out.println();
-    size++;
+    dogs[size++] = d;
   }
 
-  static void list() {
+  public static void list() {
     System.out.println("  ㄴ<개 구조 목록>");
     print(0, size);
     int command = Prompt.inputInt("    1: 상태수정 | 2: 삭제 | 3: 뒤로가기 | 4: 홈\n    >>");
@@ -53,9 +57,10 @@ public class DogHandler {
 
   static void print(int startNum, int size) {
     for (int i = startNum; i < size; i++) {
+      Dog d = dogs[i];
       System.out.printf("    [%d] %s   %s/%s/%d살   ", 
-          ids[i], photos[i], breeds[i], genders[i], ages[i]);
-      System.out.printf("%s, %s, %s\n", dates[i], places[i], status[i]);
+          d.ids, d.photos, d.breeds, d.genders, d.ages);
+      System.out.printf("%s, %s, %s\n", d.dates, d.places, d.status);
     }
   }
 
@@ -66,6 +71,7 @@ public class DogHandler {
     if (editId <= size) {
       print(editId - 1, editId);
       int editStatus = Prompt.inputInt("    1: 공고중 | 2: 입양완료\n    >>");
+      Dog d = dogs[editId - 1];
       String stateLabel = null;
       switch (editStatus) {
         case 1:
@@ -78,7 +84,7 @@ public class DogHandler {
           stateLabel = "신규";
           break;
       }
-      status[editId - 1] = stateLabel;
+      d.status = stateLabel;
       backToList("    <수정완료>");
       print(editId - 1, editId);
     } else {
@@ -95,13 +101,7 @@ public class DogHandler {
         backToList("    - 목록으로 돌아갑니다. ");
       } else if (dcommand.equalsIgnoreCase("y")) {
         for (int i = deleteId - 1; i < size; i++) {
-          photos[i] = photos[i + 1];
-          breeds[i] = breeds[i + 1];
-          genders[i] = genders[i + 1];
-          ages[i] = ages[i + 1];
-          dates[i] = dates[i + 1];
-          places[i] = places[i + 1];
-          status[i] = status[i + 1];
+          dogs[i] = dogs[i + 1];
         }
         size--;
         backToList("    - <삭제완료>");

@@ -1,5 +1,10 @@
 package com.leeheejin.myproject;
 
+import com.leeheejin.myproject.handler.CatHandler;
+import com.leeheejin.myproject.handler.DogHandler;
+import com.leeheejin.myproject.handler.OtherHandler;
+import com.leeheejin.util.Prompt;
+
 public class App {
   public static void main(String[] args) {
     while (true) {

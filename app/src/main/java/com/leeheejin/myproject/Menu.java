@@ -1,8 +1,13 @@
 package com.leeheejin.myproject;
 
+import com.leeheejin.myproject.handler.CatHandler;
+import com.leeheejin.myproject.handler.DogHandler;
+import com.leeheejin.myproject.handler.OtherHandler;
+import com.leeheejin.util.Prompt;
+
 public class Menu {
 
-  static void listMenu() {
+  public static void listMenu() {
     System.out.println("ㄴ<구조 동물 목록>");
     System.out.println("  [1] 고양이 목록 보기");
     System.out.println("  [2] 개 목록 보기"); 
