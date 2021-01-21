@@ -1,7 +1,6 @@
 package com.leeheejin.myproject.handler;
 
 import java.sql.Date;
-import com.leeheejin.myproject.Menu;
 import com.leeheejin.util.Prompt;
 
 public class CatHandler {
@@ -20,18 +19,17 @@ public class CatHandler {
   static int size = 0;
 
   public static void add() {
-    System.out.println("ㄴ<고양이 구조>");
+    System.out.println("    ㄴ<고양이 구조>");
     Cat c = new Cat();
     c.ids= size + 1;
-    System.out.printf("  [%d]\n",c.ids);
-    c.photos = Prompt.inputString("  사진? ");
-    c.breeds = Prompt.inputString("  품종? ");
-    c.genders = Prompt.inputString("  성별? ");
-    c.ages = Prompt.inputInt("  나이? ");
-    c.dates = Prompt.inputDate("  구조일? ");
-    c.places = Prompt.inputString("  구조장소? ");
+    System.out.printf("      [%d]\n",c.ids);
+    c.photos = Prompt.inputString("      사진? ");
+    c.breeds = Prompt.inputString("      품종? ");
+    c.genders = Prompt.inputString("      성별? ");
+    c.ages = Prompt.inputInt("      나이? ");
+    c.dates = Prompt.inputDate("      구조일? ");
+    c.places = Prompt.inputString("      구조장소? ");
     c.status = "신규";
-    System.out.println();
     cats[size++] = c;
   }
 
@@ -47,7 +45,7 @@ public class CatHandler {
         delete();
         break;
       case 3:
-        Menu.listMenu();
+        MenuHandler.listMenu();
         break;
       default:
         break;

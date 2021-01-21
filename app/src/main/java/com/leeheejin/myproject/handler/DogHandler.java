@@ -1,7 +1,6 @@
 package com.leeheejin.myproject.handler;
 
 import java.sql.Date;
-import com.leeheejin.myproject.Menu;
 import com.leeheejin.util.Prompt;
 
 public class DogHandler {
@@ -47,7 +46,7 @@ public class DogHandler {
         delete();
         break;
       case 3:
-        Menu.listMenu();
+        MenuHandler.listMenu();
         break;
       default:
         break;
