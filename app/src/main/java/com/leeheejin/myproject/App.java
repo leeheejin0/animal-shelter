@@ -1,5 +1,6 @@
 package com.leeheejin.myproject;
 
+import com.leeheejin.myproject.handler.BoardHandler;
 import com.leeheejin.myproject.handler.MemberHandler;
 import com.leeheejin.myproject.handler.MenuHandler;
 import com.leeheejin.util.Prompt;
@@ -21,7 +22,7 @@ public class App {
       } else if (command == 3) {
         MenuHandler.listMenu();
       } else if (command == 4) {
-        MenuHandler.boardMenu();
+        BoardHandler.menu();
       } else if (command == 5) {
         System.out.println("종료합니다. ");
         break;

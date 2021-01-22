@@ -30,15 +30,20 @@ public class MemberHandler {
     System.out.println();
   }
   public static void logIn() {
-    System.out.println("ㄴ<관리자 로그인>");
-    String id = Prompt.inputString("  아이디: ");
-    String password = Prompt.inputString("  비밀번호: ");
-    if(exist(id, password)) {
-      System.out.println("  - 로그인되었습니다. ");
-      MenuHandler.managerMenu();
-    } else {
-      System.out.println("  - 회원 정보를 찾을 수 없습니다. ");
-      System.out.println();
+    System.out.println("ㄴ<관리자 로그인(뒤로가기| 빈 문자열)>");
+    while (true) {
+      String id = Prompt.inputString("  아이디: ");
+      String password = Prompt.inputString("  비밀번호: ");
+      if(exist(id, password)) {
+        System.out.println("  - 로그인되었습니다. ");
+        MenuHandler.managerMenu();
+        break;
+      } else if (id.length() == 0 && password.length() == 0) {
+        return;
+      } else {
+        System.out.println("  - 회원 정보를 찾을 수 없습니다. ");
+        System.out.println();
+      }
     }
   }
   static boolean exist(String inputId, String inputPw) {
