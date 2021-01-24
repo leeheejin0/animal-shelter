@@ -14,26 +14,46 @@ public class BoardHandler {
     int viewCount;
     int like;
   }
-  final static int LENGTH = 100;
+
+  static final int LENGTH = 100;
   static Board[] boards = new Board[LENGTH];
   static int size = 0; 
 
-  public static void menu() {
+  static public void menu() {
     System.out.println("  ㄴ<게시판>");
-    System.out.println("    [1] 글쓰기");
-    System.out.println("    [2] 글목록");
+    System.out.println("    [1] 입양이야기");
+    System.out.println("    [2] 구조이야기");
     System.out.println("    [3] 뒤로가기");
     int command = Prompt.inputInt("    >> ");
     switch (command) {
       case 1:
-        add();
+        board("입양이야기");
         break;
       case 2:
-        list();
+        board("구조이야기");
       default:
         break;
     }
   }
+
+  static public void board(String name) {
+    BoardHandler boardList1 = new BoardHandler();
+    System.out.printf("    ㄴ<%s>\n", name);
+    System.out.println("      [1] 게시글 등록");
+    System.out.println("      [2] 게시글 목록");
+    System.out.println("      [3] 뒤로가기");
+    int command = Prompt.inputInt("    >> ");
+    switch (command) {
+      case 1:
+        boardList1.add();
+        break;
+      case 2:
+        boardList1.list1();
+      default:
+        break;
+    }
+  }
+
   static void add() {
     System.out.println("    ㄴ<글쓰기>");
     Board b = new Board();
@@ -45,59 +65,52 @@ public class BoardHandler {
     b.registeredDate = new Date(System.currentTimeMillis());
     boards[size++] = b;
   }
-  static void list() {
+  static void list1() {
     System.out.println("    ㄴ<글목록>");
     for (int i = 0; i < size; i++) {
       Board b = boards[i];
       System.out.printf("      [%d] %s |%s| %s |%d|%d|\n", 
           b.no, b.title, b.registeredDate, b.name, b.viewCount, b.like);
     }
-    int command = Prompt.inputInt("    1: 수정 | 2: 삭제 | 3: 뒤로가기\n    >>");
+    int command = Prompt.inputInt("    1: 삭제 | 2: 뒤로가기\n    >>");
     switch (command) {
       case 1:
-        edit();
-        break;
-      case 2:
         delete();
         break;
       default:
         break;
     }
   }
-  static void edit() {
-
-  }
   static void delete() {
-
-  }
-  public static void managerMenu() {
-    System.out.println("    ㄴ<게시판>");
-    System.out.println("      [1] 게시판 추가");
-    System.out.println("      [2] 게시판 수정");
-    System.out.println("      [3] 게시판 삭제");
-    System.out.println("      [4] 뒤로가기");
-    int command = Prompt.inputInt("    >> ");
-    switch (command) {
-      case 1:
-        mAdd();
-        break;
-      case 2:
-        mEdit();
-        break;
-      case 3:
-        mDelete();
-        break;
-      default:
-        break;
+    int deleteId = Prompt.inputInt("    <삭제>\n    번호? ");
+    if (deleteId <= size) {
+      for (int i = deleteId - 1; i < deleteId; i++) {
+        Board b = boards[i];
+        System.out.printf("      [%d] %s |%s| %s |%d|%d|\n", 
+            b.no, b.title, b.registeredDate, b.name, b.viewCount, b.like);
+      }
+      String dcommand = Prompt.inputString("    - 삭제하시겠습니까?(y/N) ");
+      if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
+        System.out.println("    - 목록으로 돌아갑니다. ");
+        System.out.println();
+        list1();
+      } else if (dcommand.equalsIgnoreCase("y")) {
+        for (int i = deleteId - 1; i < size; i++) {
+          boards[i] = boards[i + 1];
+        }
+        size--;
+        System.out.println("    - <삭제완료>");
+        System.out.println();
+        list1();
+      } else {
+        System.out.println("    - 잘못 입력하셨습니다. ");
+        System.out.println();
+        list1();
+      }
+    } else {
+      System.out.println("    - 잘못 입력하셨습니다. ");
+      System.out.println();
+      list1();
     }
-  }
-  static void mAdd() {
-
-  }
-  static void mEdit() {
-
-  }
-  static void mDelete() {
-
   }
 }

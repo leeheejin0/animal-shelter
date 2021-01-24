@@ -19,22 +19,37 @@ public class DogHandler {
   static int size = 0;
 
   public static void add() {
-    System.out.println("ㄴ<개 구조>");
+    System.out.println("    ㄴ<개 구조>");
     Dog d = new Dog();
     d.ids = size + 1;
-    System.out.printf("  [%d]\n",d.ids);
-    d.photos = Prompt.inputString("  사진? ");
-    d.breeds = Prompt.inputString("  품종? ");
-    d.genders = Prompt.inputString("  성별? ");
-    d.ages = Prompt.inputInt("  나이? ");
-    d.dates = Prompt.inputDate("  구조일? ");
-    d.places = Prompt.inputString("  구조장소? ");
+    System.out.printf("      [%d]\n",d.ids);
+    d.photos = Prompt.inputString("      사진? ");
+    d.breeds = Prompt.inputString("      품종? ");
+    d.genders = Prompt.inputString("      성별? ");
+    d.ages = Prompt.inputInt("      나이? ");
+    d.dates = Prompt.inputDate("      구조일? ");
+    d.places = Prompt.inputString("      구조장소? ");
     d.status = "신규";
     System.out.println();
     dogs[size++] = d;
+    MenuHandler.addAnimal();
   }
 
-  public static void list() {
+  public static void list1() {
+    System.out.println("  ㄴ<개 구조 목록>");
+    print(0, size);
+    int command = Prompt.inputInt("    1: 뒤로가기 | 2: 홈\n    >>");
+    switch (command) {
+      case 1:
+        MenuHandler.listMenu1();
+        break;
+      default:
+        break;
+    }
+    System.out.println();
+  }
+
+  public static void list2() {
     System.out.println("  ㄴ<개 구조 목록>");
     print(0, size);
     int command = Prompt.inputInt("    1: 상태수정 | 2: 삭제 | 3: 뒤로가기 | 4: 홈\n    >>");
@@ -46,7 +61,7 @@ public class DogHandler {
         delete();
         break;
       case 3:
-        MenuHandler.listMenu();
+        MenuHandler.listMenu2();
         break;
       default:
         break;
@@ -84,10 +99,10 @@ public class DogHandler {
           break;
       }
       d.status = stateLabel;
-      backToList("    <수정완료>");
+      backToList1("    <수정완료>");
       print(editId - 1, editId);
     } else {
-      backToList("    - 잘못 입력하셨습니다. ");
+      backToList1("    - 잘못 입력하셨습니다. ");
     }
   }
 
@@ -97,24 +112,24 @@ public class DogHandler {
       print(deleteId - 1, deleteId);
       String dcommand = Prompt.inputString("    - 삭제하시겠습니까?(y/N) ");
       if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
-        backToList("    - 목록으로 돌아갑니다. ");
+        backToList1("    - 목록으로 돌아갑니다. ");
       } else if (dcommand.equalsIgnoreCase("y")) {
         for (int i = deleteId - 1; i < size; i++) {
           dogs[i] = dogs[i + 1];
         }
         size--;
-        backToList("    - <삭제완료>");
+        backToList1("    - <삭제완료>");
       } else {
-        backToList("    - 잘못 입력하셨습니다. ");
+        backToList1("    - 잘못 입력하셨습니다. ");
       }
     } else {
-      backToList("    - 잘못 입력하셨습니다. ");
+      backToList1("    - 잘못 입력하셨습니다. ");
     }
   }
 
-  static void backToList(String message) {
+  static void backToList1(String message) {
     System.out.println(message);
     System.out.println();
-    list();
+    list1();
   }
 }

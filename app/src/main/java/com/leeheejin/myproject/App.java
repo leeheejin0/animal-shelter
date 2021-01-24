@@ -7,22 +7,23 @@ import com.leeheejin.util.Prompt;
 
 public class App {
   public static void main(String[] args) {
+    BoardHandler boardList1 = new BoardHandler();
+    BoardHandler boardList2 = new BoardHandler();
+    MemberHandler memberList = new MemberHandler();
+
     while (true) {
-      System.out.println("<동물 보호소 관리 시스템>");
-      System.out.println("[1] 회원가입");
-      System.out.println("[2] 관리자 로그인"); 
-      System.out.println("[3] 구조 동물 목록");
-      System.out.println("[4] 게시판");
-      System.out.println("[5] 시스템 종료");
+
+      MenuHandler.homeInMenu();
       int command = Prompt.inputInt(">> ");
       if (command == 1) {
-        MemberHandler.signUp();
+        memberList.signUp();
       } else if (command == 2) {
-        MemberHandler.logIn();
+        memberList.logIn();
+        MenuHandler.homeOutMenu();
       } else if (command == 3) {
-        MenuHandler.listMenu();
+        MenuHandler.listMenu1();
       } else if (command == 4) {
-        BoardHandler.menu();
+        boardList1.menu();
       } else if (command == 5) {
         System.out.println("종료합니다. ");
         break;
