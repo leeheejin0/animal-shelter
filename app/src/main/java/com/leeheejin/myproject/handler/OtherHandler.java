@@ -35,7 +35,6 @@ public class OtherHandler {
     o.status = "신규";
     System.out.println();
     others[size++] = o;
-    MenuHandler.addAnimal();
   }
 
   public static void list1() {
@@ -67,6 +66,7 @@ public class OtherHandler {
         MenuHandler.listMenu2();
         break;
       default:
+        MenuHandler.homeOutMenu();
         break;
     }
     System.out.println();
@@ -102,10 +102,10 @@ public class OtherHandler {
           break;
       }
       o.status = stateLabel;
-      backToList1("    <수정완료>");
+      backToList("    <수정완료>");
       print(editId - 1, editId);
     } else {
-      backToList1("    - 잘못 입력하셨습니다. ");
+      backToList("    - 잘못 입력하셨습니다. ");
     }
   }
 
@@ -115,24 +115,24 @@ public class OtherHandler {
       print(deleteId - 1, deleteId);
       String dcommand = Prompt.inputString("    - 삭제하시겠습니까?(y/N) ");
       if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
-        backToList1("    - 목록으로 돌아갑니다. ");
+        backToList("    - 목록으로 돌아갑니다. ");
       } else if (dcommand.equalsIgnoreCase("y")) {
         for (int i = deleteId - 1; i < size; i++) {
           others[i] = others[i + 1];
         }
         size--;
-        backToList1("    - <삭제완료>");
+        backToList("    - <삭제완료>");
       } else {
-        backToList1("    - 잘못 입력하셨습니다. ");
+        backToList("    - 잘못 입력하셨습니다. ");
       }
     } else {
-      backToList1("    - 잘못 입력하셨습니다. ");
+      backToList("    - 잘못 입력하셨습니다. ");
     }
   }
 
-  static void backToList1(String message) {
+  static void backToList(String message) {
     System.out.println(message);
     System.out.println();
-    list1();
+    list2();
   }
 }

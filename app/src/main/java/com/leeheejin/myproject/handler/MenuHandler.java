@@ -28,9 +28,10 @@ public class MenuHandler {
     } else if (mCommand == 3) {
       listMenu2();
     } else if (mCommand == 4) {
-      BoardHandler.menu();
+      BoardHandler.menu2();
     } else if (mCommand == 5) {
       System.out.println("종료합니다. ");
+      App.main(null);
       //break;
     } else {
       System.out.println("잘못 입력하셨습니다. ");
@@ -49,14 +50,18 @@ public class MenuHandler {
     switch (command) {
       case 1:
         CatHandler.list1();
+        listMenu1();
         break;
       case 2:
         DogHandler.list1();
+        listMenu1();
         break;
       case 3:
         OtherHandler.list1();
+        listMenu1();
         break;
       default:
+        App.main(null);
         break;
     }
   }
@@ -72,17 +77,22 @@ public class MenuHandler {
     switch (command) {
       case 1: 
         addAnimal();
+        listMenu2();
         break;
       case 2:
         CatHandler.list2();
+        listMenu2();
         break;
       case 3:
         DogHandler.list2();
+        listMenu2();
         break;
       case 4:
         OtherHandler.list2();
+        listMenu2();
         break;
       default:
+        homeOutMenu();
         break;
     }
   }
@@ -97,14 +107,18 @@ public class MenuHandler {
     switch (command) {
       case 1:
         CatHandler.add();
+        addAnimal();
         break;
       case 2:
         DogHandler.add();
+        addAnimal();
         break;
       case 3:
         OtherHandler.add();
+        addAnimal();
         break;
       default:
+        listMenu2();
         break;
     }
   }
