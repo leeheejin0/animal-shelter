@@ -66,7 +66,7 @@ public class OtherHandler {
         MenuHandler.listMenu2();
         break;
       default:
-        MenuHandler.homeOutMenu();
+        MenuHandler.managerMenu();
         break;
     }
     System.out.println();
