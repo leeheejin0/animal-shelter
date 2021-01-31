@@ -18,8 +18,10 @@ public class MenuHandler {
       BoardHandler.menu();
     } else if (command == 3) {
       //뒤로가기
+      return;
     } else {
       System.out.println("- 잘못 입력하셨습니다. ");
+      System.out.println();
     }
   }
   public static void managerMenu() {
@@ -34,7 +36,7 @@ public class MenuHandler {
       managerMenu();
     } else if (mCommand == 2) {
       System.out.println("- 로그아웃 되었습니다. \n");
-      App.main(null);
+      return;
     } else if (mCommand == 3) {
       listMenu2();
     } else if (mCommand == 4) {
@@ -75,7 +77,7 @@ public class MenuHandler {
   }
 
   public static void listMenu2() {
-    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물 목록* ]");
+    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록* ]");
     System.out.println("[1] 신규 등록");
     System.out.println("[2] 고양이 목록 보기");
     System.out.println("[3] 개 목록 보기"); 
@@ -106,7 +108,7 @@ public class MenuHandler {
   }
 
   public static void addAnimal() {
-    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물 목록 > 신규 등록* ]");
+    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록* ]");
     System.out.println("(1) 신규 고양이 등록");
     System.out.println("(2) 신규 개 등록"); 
     System.out.println("(3) 신규 기타동물 등록");

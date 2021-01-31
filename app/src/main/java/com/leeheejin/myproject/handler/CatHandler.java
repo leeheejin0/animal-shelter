@@ -19,24 +19,24 @@ public class CatHandler {
   static int size = 0;
 
   static public void add() {
-    System.out.println("    ㄴ<고양이 구조>");
+    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규고양이등록* ]");
     Cat c = new Cat();
     c.ids= size + 1;
-    System.out.printf("      [%d]\n",c.ids);
-    c.photos = Prompt.inputString("      사진? ");
-    c.breeds = Prompt.inputString("      품종? ");
-    c.genders = Prompt.inputString("      성별? ");
-    c.ages = Prompt.inputInt("      나이? ");
-    c.dates = Prompt.inputDate("      구조일? ");
-    c.places = Prompt.inputString("      구조장소? ");
+    System.out.printf("[%d]\n",c.ids);
+    c.photos = Prompt.inputString("사진? ");
+    c.breeds = Prompt.inputString("품종? ");
+    c.genders = Prompt.inputString("성별? ");
+    c.ages = Prompt.inputInt("나이? ");
+    c.dates = Prompt.inputDate("구조일? ");
+    c.places = Prompt.inputString("구조장소? ");
     c.status = "신규";
     cats[size++] = c;
   }
 
   static public void list1() {
-    System.out.println("  ㄴ<고양이 구조 목록>");
+    System.out.println("[ 홈 > 메뉴 > 구조동물목록 > 고양이구조목록* ]");
     print(0, size);
-    int command = Prompt.inputInt("    1: 뒤로가기 | 2: 홈\n    >>");
+    int command = Prompt.inputInt("1: 뒤로가기 | 2: 홈\n>>");
     switch (command) {
       case 1:
         MenuHandler.listMenu1();
@@ -48,9 +48,9 @@ public class CatHandler {
   }
 
   static public void list2() {
-    System.out.println("  ㄴ<고양이 구조 목록>");
+    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 고양이구조목록* ]");
     print(0, size);
-    int command = Prompt.inputInt("    1: 상태수정 | 2: 삭제 | 3: 뒤로가기 | 4: 홈\n    >>");
+    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 | 4: 홈\n>>");
     switch (command) {
       case 1:
         edit();
@@ -80,11 +80,11 @@ public class CatHandler {
 
   static void edit() {
     System.out.println();
-    int editId = Prompt.inputInt("    <상태수정>\n    번호? ");
+    int editId = Prompt.inputInt("<상태수정>\n번호? ");
 
     if (editId <= size) {
       print(editId - 1, editId);
-      int editStatus = Prompt.inputInt("    1: 공고중 | 2: 입양완료\n    >>");
+      int editStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n>>");
       Cat c = cats[editId - 1];
       String stateLabel = null;
       switch (editStatus) {
@@ -107,23 +107,23 @@ public class CatHandler {
   }
 
   static void delete() {
-    int deleteId = Prompt.inputInt("    <삭제>\n    번호? ");
+    int deleteId = Prompt.inputInt("<삭제>\n번호? ");
     if (deleteId <= size) {
       print(deleteId - 1, deleteId);
-      String dcommand = Prompt.inputString("    - 삭제하시겠습니까?(y/N) ");
+      String dcommand = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
       if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
-        backToList("    - 목록으로 돌아갑니다. ");
+        backToList("- 목록으로 돌아갑니다. ");
       } else if (dcommand.equalsIgnoreCase("y")) {
         for (int i = deleteId - 1; i < size; i++) {
           cats[i] = cats[i + 1];
         }
         size--;
-        backToList("    - <삭제완료>");
+        backToList("- <삭제완료>");
       } else {
-        backToList("    - 잘못 입력하셨습니다. ");
+        backToList("- 잘못 입력하셨습니다. ");
       }
     } else {
-      backToList("    - 잘못 입력하셨습니다. ");
+      backToList("- 잘못 입력하셨습니다. ");
     }
   }
 

@@ -38,12 +38,14 @@ public class App {
             }
             break;
           case 2:
+            MenuHandler.generalMenu();
             break;
           case 3:
             System.out.println("- 종료합니다. ");
             break loop;
           default:
             System.out.println("- 잘못 입력하셨습니다. ");
+            System.out.println();
             break;
         }
         //    if (input == 1) {

@@ -51,7 +51,7 @@ public class MemberHandler {
       System.out.printf("[ %s | %s ] %s | %s | %s (%s)\n", 
           m.id, m.password, m.name, m.email, m.tel, m.registeredDate);
     }
-    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기\n  >>");
+    int command = Prompt.inputInt("1: 상태수정 | 2: 회원탈퇴 | 3: 뒤로가기\n>>");
     switch (command) {
       case 1:
         String id = Prompt.inputString("아이디: ");
@@ -83,7 +83,9 @@ public class MemberHandler {
             members[i] = members[i + 1];
           }
           size--;
-          System.out.println("- <삭제완료>");
+          System.out.println("- 회원정보가 삭제되었습니다. ");
+          //return;
+          //App.main(null);
         } else {
           System.out.println("- 잘못 입력하셨습니다. ");
           MenuHandler.managerMenu();
