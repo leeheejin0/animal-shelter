@@ -9,5 +9,5 @@ public class Member {
   public String email;
   public String tel;
   public String password;
-  public Date registeredDate; 
+  public Date registeredDate;
 }

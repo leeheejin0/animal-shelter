@@ -32,7 +32,7 @@ public class MenuHandler {
     System.out.println("(4) 게시판");
     int mCommand = Prompt.inputInt(">> ");
     if (mCommand == 1) {
-      MemberHandler.editInfo();
+      MemberHandler.updateInfo();
       managerMenu();
     } else if (mCommand == 2) {
       System.out.println("- 로그아웃 되었습니다. \n");
