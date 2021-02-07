@@ -1,21 +1,23 @@
 package com.leeheejin.myproject.handler;
 
-import com.leeheejin.myproject.App;
 import com.leeheejin.util.Prompt;
 
 public class MenuHandler {
-  MemberHandler memberList = new MemberHandler();
+  CatHandler catHandler = new CatHandler();
+  DogHandler dogHandler = new DogHandler();
+  OtherHandler otherHandler = new OtherHandler();
+  BoardHandler boardHandler = new BoardHandler();
 
-  public static void generalMenu() {
+  public void generalMenu() {
     System.out.println("[ 홈 > 메뉴* ]");
     System.out.println("(1) 구조 동물 목록");
     System.out.println("(2) 게시판");
     System.out.println("(3) 뒤로가기");
     int command = Prompt.inputInt(">> ");
     if (command == 1) {
-      MenuHandler.listMenu1();
+      generalListMenu();
     } else if (command == 2) {
-      BoardHandler.menu();
+      boardHandler.generalMenu();
     } else if (command == 3) {
       //뒤로가기
       return;
@@ -24,7 +26,7 @@ public class MenuHandler {
       System.out.println();
     }
   }
-  public static void managerMenu() {
+  public void managerMenu() {
     System.out.println("[ 홈 > 관리자 메뉴* ]");
     System.out.println("(1) 회원정보수정");
     System.out.println("(2) 로그아웃"); 
@@ -38,9 +40,9 @@ public class MenuHandler {
       System.out.println("- 로그아웃 되었습니다. \n");
       return;
     } else if (mCommand == 3) {
-      listMenu2();
+      managerListMenu();
     } else if (mCommand == 4) {
-      BoardHandler.menu2();
+      boardHandler.managerMenu();
     } else {
       System.out.println("- 잘못 입력하셨습니다. ");
       System.out.println();
@@ -50,7 +52,7 @@ public class MenuHandler {
   }
   //
   //
-  public static void listMenu1() {
+  public void generalListMenu() {
     System.out.println("[ 홈 > 메뉴 > 구조동물 목록* ]");
     System.out.println("(1) 고양이 목록 보기");
     System.out.println("(2) 개 목록 보기"); 
@@ -59,24 +61,23 @@ public class MenuHandler {
     int command = Prompt.inputInt(">> ");
     switch (command) {
       case 1:
-        CatHandler.list1();
-        listMenu1();
+        catHandler.generalList();
+        generalListMenu();
         break;
       case 2:
-        DogHandler.list1();
-        listMenu1();
+        dogHandler.generalList();
+        generalListMenu();
         break;
       case 3:
-        OtherHandler.list1();
-        listMenu1();
+        otherHandler.generalList();
+        generalListMenu();
         break;
       default:
-        App.main(null);
         break;
     }
   }
 
-  public static void listMenu2() {
+  public void managerListMenu() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록* ]");
     System.out.println("[1] 신규 등록");
     System.out.println("[2] 고양이 목록 보기");
@@ -86,20 +87,20 @@ public class MenuHandler {
     int command = Prompt.inputInt(">> ");
     switch (command) {
       case 1: 
-        addAnimal();
-        listMenu2();
+        addAnimalMenu();
+        managerListMenu();
         break;
       case 2:
-        CatHandler.list2();
-        listMenu2();
+        catHandler.managerList();
+        managerListMenu();
         break;
       case 3:
-        DogHandler.list2();
-        listMenu2();
+        dogHandler.managerList();
+        managerListMenu();
         break;
       case 4:
-        OtherHandler.list2();
-        listMenu2();
+        otherHandler.managerList();
+        managerListMenu();
         break;
       default:
         managerMenu();
@@ -107,7 +108,7 @@ public class MenuHandler {
     }
   }
 
-  public static void addAnimal() {
+  public void addAnimalMenu() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록* ]");
     System.out.println("(1) 신규 고양이 등록");
     System.out.println("(2) 신규 개 등록"); 
@@ -116,19 +117,19 @@ public class MenuHandler {
     int command = Prompt.inputInt(" >> ");
     switch (command) {
       case 1:
-        CatHandler.add();
-        addAnimal();
+        catHandler.add();
+        addAnimalMenu();
         break;
       case 2:
-        DogHandler.add();
-        addAnimal();
+        dogHandler.add();
+        addAnimalMenu();
         break;
       case 3:
-        OtherHandler.add();
-        addAnimal();
+        otherHandler.add();
+        addAnimalMenu();
         break;
       default:
-        listMenu2();
+        managerListMenu();
         break;
     }
   }

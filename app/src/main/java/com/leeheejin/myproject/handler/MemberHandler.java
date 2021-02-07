@@ -97,7 +97,6 @@ public class MemberHandler {
       case 2:
         String dcommand = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
         if (dcommand.isEmpty() || dcommand.equalsIgnoreCase("n")) {
-          // MenuHandler.managerMenu();
           return;
         } else if (dcommand.equalsIgnoreCase("y")) {
           cursor = first;
@@ -136,15 +135,13 @@ public class MemberHandler {
           }
           System.out.println("- 회원정보가 삭제되었습니다. ");
           //return;
-          //App.main(null);
+          //로그인 전 홈으로 돌아가기
         } else {
           System.out.println("- 잘못 입력하셨습니다. ");
-          MenuHandler.managerMenu();
           break;
         }
         break;
       default:
-        MenuHandler.managerMenu();
         break;
     }
   }

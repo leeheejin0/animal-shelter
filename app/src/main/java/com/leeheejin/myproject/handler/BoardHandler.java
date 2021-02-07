@@ -5,26 +5,16 @@ import com.leeheejin.myproject.domain.Board;
 import com.leeheejin.util.Prompt;
 
 public class BoardHandler {
-  //  static class Board {
-  //    int no;
-  //    String name;
-  //    String password;
-  //    String title;
-  //    String content;
-  //    Date registeredDate;
-  //    int viewCount;
-  //    int like;
-  //  }
 
-  static final int LENGTH = 100;
+  final int LENGTH = 100;
   Board[] boards = new Board[LENGTH];
   int size = 0; 
 
-  static public void menu() {
-    System.out.println("<게시판>");
-    System.out.println("[1] 입양이야기");
-    System.out.println("[2] 구조이야기");
-    System.out.println("[3] 뒤로가기");
+  public void generalMenu() {
+    System.out.println("[ 홈 > 메뉴 > 게시판* ]");
+    System.out.println("(1) 입양이야기");
+    System.out.println("(2) 구조이야기");
+    System.out.println("(3) 뒤로가기");
     int command = Prompt.inputInt(">> ");
     switch (command) {
       case 1:
@@ -36,11 +26,12 @@ public class BoardHandler {
         break;
     }
   }
-  static public void menu2() {
-    System.out.println("<게시판>");
-    System.out.println("[1] 입양이야기");
-    System.out.println("[2] 구조이야기");
-    System.out.println("[3] 뒤로가기");
+  public void managerMenu() {
+    System.out.println("[ 홈 > 관리자 메뉴 > 게시판* ]");
+    System.out.println("(1) 입양이야기");
+    System.out.println("(2) 구조이야기");
+    System.out.println("(3) 게시판 관리");
+    System.out.println("(4) 뒤로가기");
     int command = Prompt.inputInt(">> ");
     switch (command) {
       case 1:
@@ -49,17 +40,21 @@ public class BoardHandler {
       case 2:
         board2("구조이야기");
         break;
+      case 3:
+        // 게시판 관리
+        break;
       default:
-        MenuHandler.managerMenu();
+        //MenuHandler.managerMenu();
         break;
     }
   }
 
-  static public void board(String name) {
+  public void board(String name) {
+    System.out.println("[ 홈 > 메뉴 > 게시판 > 입양이야기* ]");
     System.out.printf("<%s>\n", name);
-    System.out.println("[1] 게시글 등록");
-    System.out.println("[2] 게시글 목록");
-    System.out.println("[3] 뒤로가기");
+    System.out.println("(1) 게시글 등록");
+    System.out.println("(2) 게시글 목록");
+    System.out.println("(3) 뒤로가기");
     int command = Prompt.inputInt(">> ");
     switch (command) {
       case 1:
@@ -67,20 +62,21 @@ public class BoardHandler {
         board(name);
         break;
       case 2:
-        list1();
+        list();
         board(name);
         break;
       default:
-        menu();
+        generalMenu();
         break;
     }
   }
 
-  static public void board2(String name) {
+  public void board2(String name) {
+    System.out.println("[ 홈 > 관리자 메뉴 > 게시판 > 입양이야기* ]");
     System.out.printf("<%s>\n", name);
-    System.out.println("[1] 게시글 등록");
-    System.out.println("[2] 게시글 목록");
-    System.out.println("[3] 뒤로가기");
+    System.out.println("(1) 게시글 등록");
+    System.out.println("(2) 게시글 목록");
+    System.out.println("(3) 뒤로가기");
     int command = Prompt.inputInt(">> ");
     switch (command) {
       case 1:
@@ -88,11 +84,11 @@ public class BoardHandler {
         board2(name);
         break;
       case 2:
-        list2();
+        managerList();
         board2(name);
         break;
       default:
-        menu2();
+        managerMenu();
         break;
     }
   }
@@ -108,7 +104,7 @@ public class BoardHandler {
     b.registeredDate = new Date(System.currentTimeMillis());
     boards[size++] = b;
   }
-  void list1() {
+  void list() {
     System.out.println("<글목록>");
     for (int i = 0; i < size; i++) {
       Board b = boards[i];
@@ -125,7 +121,7 @@ public class BoardHandler {
     }
   }
 
-  void list2() {
+  void managerList() {
     System.out.println("<글목록>");
     for (int i = 0; i < size; i++) {
       Board b = boards[i];
@@ -138,7 +134,7 @@ public class BoardHandler {
         delete();
         break;
       default:
-        menu2();
+        managerMenu();
         break;
     }
   }
@@ -155,7 +151,7 @@ public class BoardHandler {
       if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
         System.out.println("- 목록으로 돌아갑니다. ");
         System.out.println();
-        list1();
+        list();
       } else if (dcommand.equalsIgnoreCase("y")) {
         for (int i = deleteId - 1; i < size; i++) {
           boards[i] = boards[i + 1];
@@ -163,16 +159,16 @@ public class BoardHandler {
         size--;
         System.out.println("- <삭제완료>");
         System.out.println();
-        list1();
+        list();
       } else {
         System.out.println("- 잘못 입력하셨습니다. ");
         System.out.println();
-        list1();
+        list();
       }
     } else {
       System.out.println("- 잘못 입력하셨습니다. ");
       System.out.println();
-      list1();
+      list();
     }
   }
 }

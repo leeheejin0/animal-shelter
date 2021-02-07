@@ -9,6 +9,8 @@ public class App {
     //    BoardHandler boardList1 = new BoardHandler();
     //    BoardHandler boardList2 = new BoardHandler();
     //MemberHandler memberList = new MemberHandler();
+    MenuHandler menuHandler = new MenuHandler();
+
     loop:
       while (true) {
         System.out.println("< 동물 보호소 관리 시스템 >");
@@ -29,7 +31,7 @@ public class App {
             } else if (memberInput == 2) {
               int menuNo = MemberHandler.logIn();
               if (menuNo == 1) {
-                MenuHandler.managerMenu();
+                menuHandler.managerMenu();
               }
             } else if (memberInput == 3) {
               break;
@@ -38,7 +40,7 @@ public class App {
             }
             break;
           case 2:
-            MenuHandler.generalMenu();
+            menuHandler.generalMenu();
             break;
           case 3:
             System.out.println("- 종료합니다. ");

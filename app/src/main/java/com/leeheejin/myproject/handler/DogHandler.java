@@ -1,46 +1,50 @@
 package com.leeheejin.myproject.handler;
 
-import java.sql.Date;
+import com.leeheejin.myproject.domain.Dog;
 import com.leeheejin.util.Prompt;
 
 public class DogHandler {
-  static class Dog {
-    int ids;
-    String photos;
-    String breeds;
-    String genders;
-    int ages;
-    Date dates;
-    String places;
-    String status;
-  }
-  final static int LENGTH = 100;
-  static Dog[] dogs = new Dog[LENGTH];
-  static int size = 0;
+  Dog d = new Dog();
 
-  public static void add() {
-    System.out.println("    ㄴ<개 구조>");
+  Node first;
+  Node last;
+
+  int size = 0;
+
+  public void add() {
+    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규개등록* ]");
     Dog d = new Dog();
     d.ids = size + 1;
-    System.out.printf("      [%d]\n",d.ids);
-    d.photos = Prompt.inputString("      사진? ");
-    d.breeds = Prompt.inputString("      품종? ");
-    d.genders = Prompt.inputString("      성별? ");
-    d.ages = Prompt.inputInt("      나이? ");
-    d.dates = Prompt.inputDate("      구조일? ");
-    d.places = Prompt.inputString("      구조장소? ");
+    System.out.printf("[%d]\n",d.ids);
+    d.photos = Prompt.inputString("사진? ");
+    d.breeds = Prompt.inputString("품종? ");
+    d.genders = Prompt.inputString("성별? ");
+    d.ages = Prompt.inputInt("나이? ");
+    d.dates = Prompt.inputDate("구조일? ");
+    d.places = Prompt.inputString("구조장소? ");
     d.status = "신규";
     System.out.println();
-    dogs[size++] = d;
+
+    Node node = new Node(d);
+    if (last == null) {
+      first = node;
+      last = node;
+    } else {
+      last.next = node;
+      node.prev = last;
+      last = node;
+    }
+    size++;
+    System.out.println("- 등록이 완료되었습니다. ");
+    System.out.println();
   }
 
-  public static void list1() {
-    System.out.println("  ㄴ<개 구조 목록>");
-    print(0, size);
-    int command = Prompt.inputInt("    1: 뒤로가기 | 2: 홈\n    >>");
+  public void generalList() {
+    System.out.println("[ 홈 > 메뉴 > 구조동물목록 > 개구조목록* ]");
+    print();
+    int command = Prompt.inputInt("1: 뒤로가기 | 2: 홈\n>>");
     switch (command) {
       case 1:
-        MenuHandler.listMenu1();
         break;
       default:
         break;
@@ -48,44 +52,56 @@ public class DogHandler {
     System.out.println();
   }
 
-  public static void list2() {
-    System.out.println("  ㄴ<개 구조 목록>");
-    print(0, size);
-    int command = Prompt.inputInt("    1: 상태수정 | 2: 삭제 | 3: 뒤로가기 | 4: 홈\n    >>");
+  public void managerList() {
+    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 개구조목록* ]");
+    print();
+    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 | 4: 홈\n>>");
     switch (command) {
       case 1:
-        edit();
+        update();
         break;
       case 2:
         delete();
         break;
       case 3:
-        MenuHandler.listMenu2();
         break;
       default:
-        MenuHandler.managerMenu();
         break;
     }
     System.out.println();
   }
 
-  static void print(int startNum, int size) {
-    for (int i = startNum; i < size; i++) {
-      Dog d = dogs[i];
-      System.out.printf("    [%d] %s   %s/%s/%d살   ", 
+  void print() {
+    Node cursor = first;
+    while (cursor != null) {
+      Dog d = cursor.dog;
+      System.out.printf("  [%d] %s   %s/%s/%d살   ", 
           d.ids, d.photos, d.breeds, d.genders, d.ages);
       System.out.printf("%s, %s, %s\n", d.dates, d.places, d.status);
+
+      cursor = cursor.next;
+    }
+  }
+  void print(int printNo) {
+    Node cursor = first;
+    while (cursor != null) {
+      Dog d = cursor.dog;
+      if (d.ids == printNo) {
+        System.out.printf("  [%d] %s   %s/%s/%d살   ", 
+            d.ids, d.photos, d.breeds, d.genders, d.ages);
+        System.out.printf("%s, %s, %s\n", d.dates, d.places, d.status);
+      }
+      cursor = cursor.next;
     }
   }
 
-  static void edit() {
+  void update() {
     System.out.println();
-    int editId = Prompt.inputInt("    <상태수정>\n    번호? ");
+    int updateNo = Prompt.inputInt("<상태수정>\n번호? ");
 
-    if (editId <= size) {
-      print(editId - 1, editId);
-      int editStatus = Prompt.inputInt("    1: 공고중 | 2: 입양완료\n    >>");
-      Dog d = dogs[editId - 1];
+    if (updateNo <= size) {
+      print(updateNo);
+      int editStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n>>");
       String stateLabel = null;
       switch (editStatus) {
         case 1:
@@ -98,38 +114,75 @@ public class DogHandler {
           stateLabel = "신규";
           break;
       }
-      d.status = stateLabel;
-      backToList("    <수정완료>");
-      print(editId - 1, editId);
+      Node cursor = first;
+      while (cursor != null) {
+        Dog d = cursor.dog;
+        if (d.ids == updateNo) {
+          d.status = stateLabel;
+          backToList("<수정완료>");
+          print(updateNo);
+          break;
+        }
+        cursor = cursor.next;
+      }
     } else {
-      backToList("    - 잘못 입력하셨습니다. ");
+      backToList("- 잘못 입력하셨습니다. ");
     }
   }
 
-  static void delete() {
-    int deleteId = Prompt.inputInt("    <삭제>\n    번호? ");
-    if (deleteId <= size) {
-      print(deleteId - 1, deleteId);
+  void delete() {
+    int deleteNo = Prompt.inputInt("<삭제>\n번호? ");
+    if (deleteNo <= size) {
+      print(deleteNo);
       String dcommand = Prompt.inputString("    - 삭제하시겠습니까?(y/N) ");
       if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
         backToList("    - 목록으로 돌아갑니다. ");
       } else if (dcommand.equalsIgnoreCase("y")) {
-        for (int i = deleteId - 1; i < size; i++) {
-          dogs[i] = dogs[i + 1];
+        Node cursor = first;
+        while (cursor != null) {
+          if (cursor.dog.ids == deleteNo) {
+            if (first == last) {
+              first = last = null;
+              break;
+            }
+            if (cursor == first) {
+              first = cursor.next;
+              cursor.prev = null;
+            } else {
+              cursor.prev.next = cursor.next;
+              if (cursor.next != null) {
+                cursor.next.prev = cursor.prev;
+              }
+              if (cursor == last) {
+                last = cursor.prev;
+              }
+              break;
+            }
+          }
+          cursor = cursor.next;
         }
         size--;
-        backToList("    - <삭제완료>");
+        backToList("- <삭제완료>");
       } else {
-        backToList("    - 잘못 입력하셨습니다. ");
+        backToList("- 잘못 입력하셨습니다. ");
       }
     } else {
-      backToList("    - 잘못 입력하셨습니다. ");
+      backToList("- 잘못 입력하셨습니다. ");
     }
   }
 
-  static void backToList(String message) {
+  void backToList(String message) {
     System.out.println(message);
     System.out.println();
-    list2();
+    managerList();
+  }
+
+  static class Node {
+    Dog dog;
+    Node next;
+    Node prev;
+    Node(Dog dog){
+      this.dog = dog;
+    }
   }
 }
