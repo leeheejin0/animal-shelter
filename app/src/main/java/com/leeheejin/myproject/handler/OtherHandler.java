@@ -14,16 +14,16 @@ public class OtherHandler {
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규기타동물등록* ]");
     Other o = new Other();
-    o.ids = size + 1;
-    System.out.printf("[%d]\n",o.ids);
-    o.species = Prompt.inputString("종류? ");
-    o.photos = Prompt.inputString("사진? ");
-    o.breeds = Prompt.inputString("품종? ");
-    o.genders = Prompt.inputString("성별? ");
-    o.ages = Prompt.inputInt("나이? ");
-    o.dates = Prompt.inputDate("구조일? ");
-    o.places = Prompt.inputString("구조장소? ");
-    o.status = "신규";
+    o.setIds(size + 1);
+    System.out.printf("[%d]\n",o.getIds());
+    o.setSpecies(Prompt.inputString("종류? "));
+    o.setPhotos(Prompt.inputString("사진? "));
+    o.setBreeds(Prompt.inputString("품종? "));
+    o.setGenders(Prompt.inputString("성별? "));
+    o.setAges(Prompt.inputInt("나이? "));
+    o.setDates(Prompt.inputDate("구조일? "));
+    o.setPlaces(Prompt.inputString("구조장소? "));
+    o.setStatus("신규");
     System.out.println();
 
     Node node = new Node(o);
@@ -76,9 +76,9 @@ public class OtherHandler {
     Node cursor = first;
     while (cursor != null) {
       Other o = cursor.other;
-      System.out.printf("  [%d] %s / %s   ", o.ids, o.species, o.photos);
-      System.out.printf("%s/%s/%d살   ", o.breeds, o.genders, o.ages);
-      System.out.printf("%s, %s, %s\n", o.dates, o.places, o.status);
+      System.out.printf("  [%d] %s / %s   ", o.getIds(), o.getSpecies(), o.getPhotos());
+      System.out.printf("%s/%s/%d살   ", o.getBreeds(), o.getGenders(), o.getAges());
+      System.out.printf("%s, %s, %s\n", o.getDates(), o.getPlaces(), o.getStatus());
 
       cursor = cursor.next;
     }
@@ -88,10 +88,10 @@ public class OtherHandler {
     Node cursor = first;
     while (cursor != null) {
       Other o = cursor.other;
-      if (o.ids == printNo) {
-        System.out.printf("  [%d] %s / %s   ", o.ids, o.species, o.photos);
-        System.out.printf("%s/%s/%d살   ", o.breeds, o.genders, o.ages);
-        System.out.printf("%s, %s, %s\n", o.dates, o.places, o.status);
+      if (o.getIds() == printNo) {
+        System.out.printf("  [%d] %s / %s   ", o.getIds(), o.getSpecies(), o.getPhotos());
+        System.out.printf("%s/%s/%d살   ", o.getBreeds(), o.getGenders(), o.getAges());
+        System.out.printf("%s, %s, %s\n", o.getDates(), o.getPlaces(), o.getStatus());
       }
       cursor = cursor.next;
     }
@@ -119,8 +119,8 @@ public class OtherHandler {
       Node cursor = first;
       while (cursor != null) {
         Other o = cursor.other;
-        if (o.ids == updateNo) {
-          o.status = stateLabel;
+        if (o.getIds() == updateNo) {
+          o.setStatus(stateLabel);
           backToList("<수정완료>");
           print(updateNo);
           break;
@@ -142,7 +142,7 @@ public class OtherHandler {
       } else if (dcommand.equalsIgnoreCase("y")) {
         Node cursor = first;
         while (cursor != null) {
-          if (cursor.other.ids == deleteNo) {
+          if (cursor.other.getIds() == deleteNo) {
             if (first == last) {
               first = last = null;
               break;

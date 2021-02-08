@@ -14,15 +14,15 @@ public class DogHandler {
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규개등록* ]");
     Dog d = new Dog();
-    d.ids = size + 1;
-    System.out.printf("[%d]\n",d.ids);
-    d.photos = Prompt.inputString("사진? ");
-    d.breeds = Prompt.inputString("품종? ");
-    d.genders = Prompt.inputString("성별? ");
-    d.ages = Prompt.inputInt("나이? ");
-    d.dates = Prompt.inputDate("구조일? ");
-    d.places = Prompt.inputString("구조장소? ");
-    d.status = "신규";
+    d.setIds(size + 1);
+    System.out.printf("[%d]\n",d.getIds());
+    d.setPhotos(Prompt.inputString("사진? "));
+    d.setBreeds(Prompt.inputString("품종? "));
+    d.setGenders(Prompt.inputString("성별? "));
+    d.setAges(Prompt.inputInt("나이? "));
+    d.setDates(Prompt.inputDate("구조일? "));
+    d.setPlaces(Prompt.inputString("구조장소? "));
+    d.setStatus("신규");
     System.out.println();
 
     Node node = new Node(d);
@@ -76,8 +76,8 @@ public class DogHandler {
     while (cursor != null) {
       Dog d = cursor.dog;
       System.out.printf("  [%d] %s   %s/%s/%d살   ", 
-          d.ids, d.photos, d.breeds, d.genders, d.ages);
-      System.out.printf("%s, %s, %s\n", d.dates, d.places, d.status);
+          d.getIds(), d.getPhotos(), d.getBreeds(), d.getGenders(), d.getAges());
+      System.out.printf("%s, %s, %s\n", d.getDates(), d.getPlaces(), d.getStatus());
 
       cursor = cursor.next;
     }
@@ -86,10 +86,10 @@ public class DogHandler {
     Node cursor = first;
     while (cursor != null) {
       Dog d = cursor.dog;
-      if (d.ids == printNo) {
+      if (d.getIds() == printNo) {
         System.out.printf("  [%d] %s   %s/%s/%d살   ", 
-            d.ids, d.photos, d.breeds, d.genders, d.ages);
-        System.out.printf("%s, %s, %s\n", d.dates, d.places, d.status);
+            d.getIds(), d.getPhotos(), d.getBreeds(), d.getGenders(), d.getAges());
+        System.out.printf("%s, %s, %s\n", d.getDates(), d.getPlaces(), d.getStatus());
       }
       cursor = cursor.next;
     }
@@ -117,8 +117,8 @@ public class DogHandler {
       Node cursor = first;
       while (cursor != null) {
         Dog d = cursor.dog;
-        if (d.ids == updateNo) {
-          d.status = stateLabel;
+        if (d.getIds() == updateNo) {
+          d.setStatus(stateLabel);
           backToList("<수정완료>");
           print(updateNo);
           break;
@@ -134,13 +134,13 @@ public class DogHandler {
     int deleteNo = Prompt.inputInt("<삭제>\n번호? ");
     if (deleteNo <= size) {
       print(deleteNo);
-      String dcommand = Prompt.inputString("    - 삭제하시겠습니까?(y/N) ");
+      String dcommand = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
       if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
-        backToList("    - 목록으로 돌아갑니다. ");
+        backToList("- 목록으로 돌아갑니다. ");
       } else if (dcommand.equalsIgnoreCase("y")) {
         Node cursor = first;
         while (cursor != null) {
-          if (cursor.dog.ids == deleteNo) {
+          if (cursor.dog.getIds() == deleteNo) {
             if (first == last) {
               first = last = null;
               break;

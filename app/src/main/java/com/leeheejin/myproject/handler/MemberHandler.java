@@ -14,13 +14,13 @@ public class MemberHandler {
   public static void signUp() {
     System.out.println("[ 홈 > 회원가입* ]");
     Member m = new Member();
-    m.no = size + 1;
-    m.id = Prompt.inputString("아이디: ");
-    m.name = Prompt.inputString("이름: ");
-    m.email = Prompt.inputString("이메일: ");
-    m.tel = Prompt.inputString("전화번호: ");
-    m.password = Prompt.inputString("비밀번호: ");
-    m.registeredDate = new Date(System.currentTimeMillis());
+    m.setNo(size + 1);
+    m.setId(Prompt.inputString("아이디: "));
+    m.setName(Prompt.inputString("이름: "));
+    m.setEmail(Prompt.inputString("이메일: "));
+    m.setTel(Prompt.inputString("전화번호: "));
+    m.setPassword(Prompt.inputString("비밀번호: "));
+    m.setRegisteredDate(new Date(System.currentTimeMillis()));
 
     Node node = new Node(m);
     if (last == null) {
@@ -61,9 +61,10 @@ public class MemberHandler {
     Node cursor = first;
     while (cursor != null) {
       Member m = cursor.members;
-      if (loginAccount == m.no) {
+      if (loginAccount == m.getNo()) {
         System.out.printf("[ %s | %s ] %s | %s | %s (%s)\n", 
-            m.id, m.password, m.name, m.email, m.tel, m.registeredDate);
+            m.getId(), m.getPassword(), m.getName(), m.getEmail(), 
+            m.getTel(), m.getRegisteredDate());
         break;
       }
       cursor = cursor.next;
@@ -79,14 +80,15 @@ public class MemberHandler {
         cursor = first;
         while (cursor != null) {
           Member m = cursor.members;
-          if (loginAccount == m.no) {
-            m.id = id;
-            m.password = password;
-            m.name = name;
-            m.email = email;
-            m.tel = tel;
+          if (loginAccount == m.getNo()) {
+            m.setId(id);
+            m.setPassword(password);
+            m.setName(name);
+            m.setEmail(email);
+            m.setTel(tel);
             System.out.printf("[ %s | %s ] %s | %s | %s (%s)\n", 
-                m.id, m.password, m.name, m.email, m.tel, m.registeredDate);
+                m.getId(), m.getPassword(), m.getName(), m.getEmail(), 
+                m.getTel(), m.getRegisteredDate());
             break;
           }
           cursor = cursor.next;
@@ -102,7 +104,7 @@ public class MemberHandler {
           cursor = first;
           while (cursor != null) {
             Member member = cursor.members;
-            if (member.no == loginAccount) {
+            if (member.getNo() == loginAccount) {
               member = null;
               break;
             }
@@ -111,7 +113,7 @@ public class MemberHandler {
 
           cursor = first;
           while (cursor != null) {
-            if (cursor.members.no == loginAccount) {
+            if (cursor.members.getNo() == loginAccount) {
               size--;
               if (first == last) {
                 first = last =null;
@@ -149,8 +151,9 @@ public class MemberHandler {
   static boolean exist(String inputId, String inputPw) {
     Node cursor = first;
     while (cursor != null){
-      if (inputId.equals(cursor.members.id) && inputPw.equals(cursor.members.password)) {
-        loginAccount = cursor.members.no;
+      if (inputId.equals(cursor.members.getId()) && 
+          inputPw.equals(cursor.members.getPassword())) {
+        loginAccount = cursor.members.getNo();
         return true;
       }
       cursor = cursor.next;

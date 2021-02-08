@@ -96,12 +96,12 @@ public class BoardHandler {
   void add() {
     System.out.println("<글쓰기>");
     Board b = new Board();
-    b.no = size + 1;
-    b.name = Prompt.inputString("이름>> ");
-    b.password = Prompt.inputString("비밀번호>> ");
-    b.title = Prompt.inputString("제목>> ");
-    b.content = Prompt.inputString("내용>> ");
-    b.registeredDate = new Date(System.currentTimeMillis());
+    b.setNo(size + 1);
+    b.setName(Prompt.inputString("이름>> "));
+    b.setPassword(Prompt.inputString("비밀번호>> "));
+    b.setTitle(Prompt.inputString("제목>> "));
+    b.setContent(Prompt.inputString("내용>> "));
+    b.setRegisteredDate(new Date(System.currentTimeMillis()));
     boards[size++] = b;
   }
   void list() {
@@ -109,7 +109,8 @@ public class BoardHandler {
     for (int i = 0; i < size; i++) {
       Board b = boards[i];
       System.out.printf("[%d] %s |%s| %s |%d|%d|\n", 
-          b.no, b.title, b.registeredDate, b.name, b.viewCount, b.like);
+          b.getNo(), b.getTitle(), b.getRegisteredDate(), b.getName(), 
+          b.getViewCount(), b.getLike());
     }
     int command = Prompt.inputInt("1: 삭제 | 2: 뒤로가기\n>>");
     switch (command) {
@@ -126,7 +127,8 @@ public class BoardHandler {
     for (int i = 0; i < size; i++) {
       Board b = boards[i];
       System.out.printf("[%d] %s |%s| %s |%d|%d|\n", 
-          b.no, b.title, b.registeredDate, b.name, b.viewCount, b.like);
+          b.getNo(), b.getTitle(), b.getRegisteredDate(), b.getName(), 
+          b.getViewCount(), b.getLike());
     }
     int command = Prompt.inputInt("1: 삭제 | 2: 뒤로가기\n>>");
     switch (command) {
@@ -145,7 +147,8 @@ public class BoardHandler {
       for (int i = deleteId - 1; i < deleteId; i++) {
         Board b = boards[i];
         System.out.printf("[%d] %s |%s| %s |%d|%d|\n", 
-            b.no, b.title, b.registeredDate, b.name, b.viewCount, b.like);
+            b.getNo(), b.getTitle(), b.getRegisteredDate(), b.getName(), 
+            b.getViewCount(), b.getLike());
       }
       String dcommand = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
       if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {

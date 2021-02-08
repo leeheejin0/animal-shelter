@@ -8,7 +8,7 @@ public class CatList {
   private Node first;
   private Node last;
 
-  int size = 0;  
+  private int size = 0; 
 
   public void add(Cat c) {
     Node node = new Node(c);
@@ -36,8 +36,55 @@ public class CatList {
     return arr;
   }
 
+  public Object get(int index) {
+    if (index <= 0 || index > this.size) {
+      return null;
+    }
+    int count = 1; 
+    Node cursor = first;
+    while (cursor != null) {
+      if (index == count++) {
+        return cursor.obj;
+      }
+      cursor = cursor.next;
+    }
+    return null;
+  }
 
+  public boolean delete(Object obj) {
+    Node cursor = first;
+    while (cursor != null) {
+      if (cursor.obj.equals(obj)) {
+        this.size--;
+        if (first == last) {
+          first = last = null;
+          return true;
+        }
+        if (cursor == first) {
+          first = cursor.next;
+          cursor.prev = null;
+        } else {
+          cursor.prev.next = cursor.next;
+          if (cursor.next != null) {
+            cursor.next.prev = cursor.prev;
+          }
+          if (cursor == last) {
+            last = cursor.prev;
+          }
+          return true;
+        }
+      }
+      cursor = cursor.next;
+    }
+    return false;
+  }
 
+  //  public Object[] deleteNum(int index, Object obj){
+  //    Object[] arr = new Object[size];
+  //    for (int i = index; i < size; i++) {
+  //      arr[i].setIds();
+  //    }
+  //  }
   static class Node {
     Object obj;
     Node next;
@@ -45,5 +92,9 @@ public class CatList {
     Node (Object obj){
       this.obj = obj;
     }
+  }
+
+  public int size() {
+    return this.size;
   }
 }

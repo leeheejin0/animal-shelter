@@ -12,15 +12,15 @@ public class CatHandler {
 
     Cat c = new Cat();
 
-    c.ids= catList.size + 1;
-    System.out.printf("[%d]\n",c.ids);
-    c.photos = Prompt.inputString("사진? ");
-    c.breeds = Prompt.inputString("품종? ");
-    c.genders = Prompt.inputString("성별? ");
-    c.ages = Prompt.inputInt("나이? ");
-    c.dates = Prompt.inputDate("구조일? ");
-    c.places = Prompt.inputString("구조장소? ");
-    c.status = "신규";
+    c.setIds(catList.size() + 1);
+    System.out.printf("[%d]\n",c.getIds());
+    c.setPhotos(Prompt.inputString("사진? "));
+    c.setBreeds(Prompt.inputString("품종? "));
+    c.setGenders(Prompt.inputString("성별? "));
+    c.setAges(Prompt.inputInt("나이? "));
+    c.setDates(Prompt.inputDate("구조일? "));
+    c.setPlaces(Prompt.inputString("구조장소? "));
+    c.setStatus("신규");
 
     catList.add(c);
 
@@ -60,39 +60,11 @@ public class CatHandler {
     System.out.println();
   }
 
-
-  void print() {
-    Object[] list = catList.toArray();
-
-    for (Object obj : list) {
-      Cat c = (Cat) obj;
-
-      System.out.printf("  [%d] %s   %s/%s/%d살   ", 
-          c.ids, c.photos, c.breeds, c.genders, c.ages);
-      System.out.printf("%s, %s, %s\n", c.dates, c.places, c.status);
-    }
-  }
-
-  void print(int printNo) {
-    Node cursor = first;
-    while (cursor != null) {
-      Cat c = cursor.cat;
-      if (c.ids == printNo) {
-        System.out.printf("  [%d] %s   %s/%s/%d살   ", 
-            c.ids, c.photos, c.breeds, c.genders, c.ages);
-        System.out.printf("%s, %s, %s\n", c.dates, c.places, c.status);
-
-      }
-      cursor = cursor.next;
-    }
-  }
-
-
   void update() {
     System.out.println();
     int updateNo = Prompt.inputInt("<상태수정>\n번호? ");
 
-    if (updateNo <= size) {
+    if (updateNo <= catList.size()) {
 
       print(updateNo);
       int updateStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n>>");
@@ -108,17 +80,11 @@ public class CatHandler {
           stateLabel = "신규";
           break;
       }
-      Node cursor = first;
-      while (cursor != null) {
-        Cat c = cursor.cat;
-        if (c.ids == updateNo) {
-          c.status = stateLabel;
-          backToList("<수정완료>");
-          print(updateNo);
-          break;
-        }
-        cursor = cursor.next;
-      }
+      Object obj = catList.get(updateNo);
+      Cat c = (Cat) obj;
+      c.setStatus(stateLabel);
+      backToList("<수정완료>");
+      print(updateNo);
     } else {
       backToList("- 잘못 입력하셨습니다. ");
     }
@@ -126,37 +92,20 @@ public class CatHandler {
 
   void delete() {
     int deleteNo = Prompt.inputInt("<삭제>\n번호? ");
-    if (deleteNo <= size) {
+    if (deleteNo <= catList.size()) {
       print(deleteNo);
       String dcommand = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
       if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
         backToList("- 목록으로 돌아갑니다. ");
       } else if (dcommand.equalsIgnoreCase("y")) {
-        Node cursor = first;
-        while (cursor != null) {
-          Cat c = cursor.cat;
-          if (cursor.cat.ids == deleteNo) {
-            if (first == last) {
-              first = last = null;
-              break;
-            }
-            if (cursor == first) {
-              first = cursor.next;
-              cursor.prev = null;
-            } else {
-              cursor.prev.next = cursor.next;
-              if (cursor.next != null) {
-                cursor.next.prev = cursor.prev;
-              }
-              if (cursor == last) {
-                last = cursor.prev;
-              }
-              break;
-            }
-          }
-          cursor = cursor.next;
+        catList.delete(catList.get(deleteNo));
+
+        // 번호 바꾸기
+        for (int i = deleteNo; i <= catList.size(); i++) {
+          Cat c = (Cat) catList.get(i);
+          c.setIds(c.getIds() - 1);
         }
-        size--;
+
         backToList("- <삭제완료>");
       } else {
         backToList("- 잘못 입력하셨습니다. ");
@@ -164,6 +113,26 @@ public class CatHandler {
     } else {
       backToList("- 잘못 입력하셨습니다. ");
     }
+  }
+
+  private void print() {
+    Object[] list = catList.toArray();
+
+    for (Object obj : list) {
+      Cat c = (Cat) obj;
+
+      System.out.printf("  [%d] %s   %s/%s/%d살   ", 
+          c.getIds(), c.getPhotos(), c.getBreeds(), c.getGenders(), c.getAges());
+      System.out.printf("%s, %s, %s\n", c.getDates(), c.getPlaces(), c.getStatus());
+    }
+  }
+
+  private void print(int printNo) {
+    Object obj = catList.get(printNo);
+    Cat c = (Cat) obj;
+    System.out.printf("  [%d] %s   %s/%s/%d살   ", 
+        c.getIds(), c.getPhotos(), c.getBreeds(), c.getGenders(), c.getAges());
+    System.out.printf("%s, %s, %s\n", c.getDates(), c.getPlaces(), c.getStatus());
   }
 
   void backToList(String message) {
@@ -176,7 +145,10 @@ public class CatHandler {
     Object [] list = catList.toArray();
     for (Object obj : list) {
       Cat c = (Cat) obj;
-      if ()
+      if (c.getIds() == catNo) {
+        return c;
+      }
     }
+    return null;
   }
 }
