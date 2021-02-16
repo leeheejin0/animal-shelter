@@ -4,12 +4,9 @@ import com.leeheejin.myproject.domain.Other;
 import com.leeheejin.util.Prompt;
 
 public class OtherHandler {
-  Other o = new Other();
 
-  Node first;
-  Node last;
 
-  int size = 0;
+
 
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규기타동물등록* ]");

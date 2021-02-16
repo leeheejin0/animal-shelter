@@ -50,7 +50,7 @@ public class CatHandler {
         update();
         break;
       case 2:
-        delete();
+        remove();
         break;
       case 3:
         break;
@@ -90,22 +90,21 @@ public class CatHandler {
     }
   }
 
-  void delete() {
-    int deleteNo = Prompt.inputInt("<삭제>\n번호? ");
-    if (deleteNo <= catList.size()) {
-      print(deleteNo);
-      String dcommand = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
-      if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
+  void remove() {
+    int removeNo = Prompt.inputInt("<삭제>\n번호? ");
+    if (removeNo <= catList.size()) {
+      print(removeNo);
+      String command = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
+      if (command.equalsIgnoreCase("n") || command.isEmpty()) {
         backToList("- 목록으로 돌아갑니다. ");
-      } else if (dcommand.equalsIgnoreCase("y")) {
-        catList.delete(catList.get(deleteNo));
+      } else if (command.equalsIgnoreCase("y")) {
+        catList.remove(catList.get(removeNo));
 
         // 번호 바꾸기
-        for (int i = deleteNo; i <= catList.size(); i++) {
+        for (int i = removeNo; i <= catList.size(); i++) {
           Cat c = (Cat) catList.get(i);
           c.setIds(c.getIds() - 1);
         }
-
         backToList("- <삭제완료>");
       } else {
         backToList("- 잘못 입력하셨습니다. ");
@@ -135,7 +134,7 @@ public class CatHandler {
     System.out.printf("%s, %s, %s\n", c.getDates(), c.getPlaces(), c.getStatus());
   }
 
-  void backToList(String message) {
+  private void backToList(String message) {
     System.out.println(message);
     System.out.println();
     managerList();

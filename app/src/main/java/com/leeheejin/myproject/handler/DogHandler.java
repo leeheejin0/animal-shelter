@@ -4,17 +4,15 @@ import com.leeheejin.myproject.domain.Dog;
 import com.leeheejin.util.Prompt;
 
 public class DogHandler {
-  Dog d = new Dog();
 
-  Node first;
-  Node last;
-
-  int size = 0;
+  DogList dogList = new DogList();
 
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규개등록* ]");
+
     Dog d = new Dog();
-    d.setIds(size + 1);
+
+    d.setIds(dogList.size() + 1);
     System.out.printf("[%d]\n",d.getIds());
     d.setPhotos(Prompt.inputString("사진? "));
     d.setBreeds(Prompt.inputString("품종? "));
@@ -25,16 +23,8 @@ public class DogHandler {
     d.setStatus("신규");
     System.out.println();
 
-    Node node = new Node(d);
-    if (last == null) {
-      first = node;
-      last = node;
-    } else {
-      last.next = node;
-      node.prev = last;
-      last = node;
-    }
-    size++;
+    dogList.add(d);
+
     System.out.println("- 등록이 완료되었습니다. ");
     System.out.println();
   }
@@ -61,7 +51,7 @@ public class DogHandler {
         update();
         break;
       case 2:
-        delete();
+        remove();
         break;
       case 3:
         break;
@@ -71,39 +61,16 @@ public class DogHandler {
     System.out.println();
   }
 
-  void print() {
-    Node cursor = first;
-    while (cursor != null) {
-      Dog d = cursor.dog;
-      System.out.printf("  [%d] %s   %s/%s/%d살   ", 
-          d.getIds(), d.getPhotos(), d.getBreeds(), d.getGenders(), d.getAges());
-      System.out.printf("%s, %s, %s\n", d.getDates(), d.getPlaces(), d.getStatus());
-
-      cursor = cursor.next;
-    }
-  }
-  void print(int printNo) {
-    Node cursor = first;
-    while (cursor != null) {
-      Dog d = cursor.dog;
-      if (d.getIds() == printNo) {
-        System.out.printf("  [%d] %s   %s/%s/%d살   ", 
-            d.getIds(), d.getPhotos(), d.getBreeds(), d.getGenders(), d.getAges());
-        System.out.printf("%s, %s, %s\n", d.getDates(), d.getPlaces(), d.getStatus());
-      }
-      cursor = cursor.next;
-    }
-  }
-
   void update() {
     System.out.println();
     int updateNo = Prompt.inputInt("<상태수정>\n번호? ");
 
-    if (updateNo <= size) {
+    if (updateNo <= dogList.size()) {
+
       print(updateNo);
-      int editStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n>>");
+      int updateStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n>>");
       String stateLabel = null;
-      switch (editStatus) {
+      switch (updateStatus) {
         case 1:
           stateLabel = "공고중";
           break;
@@ -114,54 +81,30 @@ public class DogHandler {
           stateLabel = "신규";
           break;
       }
-      Node cursor = first;
-      while (cursor != null) {
-        Dog d = cursor.dog;
-        if (d.getIds() == updateNo) {
-          d.setStatus(stateLabel);
-          backToList("<수정완료>");
-          print(updateNo);
-          break;
-        }
-        cursor = cursor.next;
-      }
+      Object obj = dogList.get(updateNo);
+      Dog d = (Dog) obj;
+      d.setStatus(stateLabel);
+      backToList("<수정완료>");
+      print(updateNo);
     } else {
       backToList("- 잘못 입력하셨습니다. ");
     }
   }
 
-  void delete() {
-    int deleteNo = Prompt.inputInt("<삭제>\n번호? ");
-    if (deleteNo <= size) {
-      print(deleteNo);
-      String dcommand = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
-      if (dcommand.equalsIgnoreCase("n") || dcommand.isEmpty()) {
+  void remove() {
+    int removeNo = Prompt.inputInt("<삭제>\n번호? ");
+    if (removeNo <= dogList.size()) {
+      print(removeNo);
+      String command = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
+      if (command.equalsIgnoreCase("n") || command.isEmpty()) {
         backToList("- 목록으로 돌아갑니다. ");
-      } else if (dcommand.equalsIgnoreCase("y")) {
-        Node cursor = first;
-        while (cursor != null) {
-          if (cursor.dog.getIds() == deleteNo) {
-            if (first == last) {
-              first = last = null;
-              break;
-            }
-            if (cursor == first) {
-              first = cursor.next;
-              cursor.prev = null;
-            } else {
-              cursor.prev.next = cursor.next;
-              if (cursor.next != null) {
-                cursor.next.prev = cursor.prev;
-              }
-              if (cursor == last) {
-                last = cursor.prev;
-              }
-              break;
-            }
-          }
-          cursor = cursor.next;
+      } else if (command.equalsIgnoreCase("y")) {
+        dogList.remove(dogList.get(removeNo));
+
+        for (int i = removeNo; i <= dogList.size(); i++) {
+          Dog d = (Dog) dogList.get(i);
+          d.setIds(d.getIds() - 1);
         }
-        size--;
         backToList("- <삭제완료>");
       } else {
         backToList("- 잘못 입력하셨습니다. ");
@@ -171,18 +114,40 @@ public class DogHandler {
     }
   }
 
-  void backToList(String message) {
+  private void print() {
+    Object[] list = dogList.toArray();
+
+    for (Object obj : list) {
+      Dog d = (Dog) obj;
+      System.out.printf("  [%d] %s   %s/%s/%d살   ", 
+          d.getIds(), d.getPhotos(), d.getBreeds(), d.getGenders(), d.getAges());
+      System.out.printf("%s, %s, %s\n", d.getDates(), d.getPlaces(), d.getStatus());
+    }
+  }
+
+  private void print(int printNo) {
+    Object obj = dogList.get(printNo);
+    Dog d = (Dog) obj;
+    System.out.printf("  [%d] %s   %s/%s/%d살   ", 
+        d.getIds(), d.getPhotos(), d.getBreeds(), d.getGenders(), d.getAges());
+    System.out.printf("%s, %s, %s\n", d.getDates(), d.getPlaces(), d.getStatus());
+  }
+
+  private void backToList(String message) {
     System.out.println(message);
     System.out.println();
     managerList();
   }
 
-  static class Node {
-    Dog dog;
-    Node next;
-    Node prev;
-    Node(Dog dog){
-      this.dog = dog;
+  private Dog findByNo(int dogNo) {
+    Object [] list = dogList.toArray();
+    for (Object obj : list) {
+      Dog d = (Dog) obj;
+      if (d.getIds() == dogNo) {
+        return d;
+      }
     }
+    return null;
   }
+
 }

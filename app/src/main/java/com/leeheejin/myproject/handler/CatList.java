@@ -51,7 +51,7 @@ public class CatList {
     return null;
   }
 
-  public boolean delete(Object obj) {
+  public boolean remove(Object obj) {
     Node cursor = first;
     while (cursor != null) {
       if (cursor.obj.equals(obj)) {
@@ -79,12 +79,6 @@ public class CatList {
     return false;
   }
 
-  //  public Object[] deleteNum(int index, Object obj){
-  //    Object[] arr = new Object[size];
-  //    for (int i = index; i < size; i++) {
-  //      arr[i].setIds();
-  //    }
-  //  }
   static class Node {
     Object obj;
     Node next;
