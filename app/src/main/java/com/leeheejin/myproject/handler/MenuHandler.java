@@ -53,7 +53,7 @@ public class MenuHandler {
   //
   //
   public void generalListMenu() {
-    System.out.println("[ 홈 > 메뉴 > 구조동물 목록* ]");
+    System.out.println("[ 홈 > 메뉴 > 구조동물목록* ]");
     System.out.println("(1) 고양이 목록 보기");
     System.out.println("(2) 개 목록 보기"); 
     System.out.println("(3) 기타 동물 목록 보기");
@@ -73,6 +73,7 @@ public class MenuHandler {
         generalListMenu();
         break;
       default:
+        generalMenu();
         break;
     }
   }

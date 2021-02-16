@@ -1,11 +1,12 @@
 package com.leeheejin.myproject.handler;
 
 import com.leeheejin.myproject.domain.Cat;
+import com.leeheejin.util.List;
 import com.leeheejin.util.Prompt;
 
 public class CatHandler {
 
-  CatList catList = new CatList();
+  List catList = new List();
 
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규고양이등록* ]");
@@ -21,6 +22,7 @@ public class CatHandler {
     c.setDates(Prompt.inputDate("구조일? "));
     c.setPlaces(Prompt.inputString("구조장소? "));
     c.setStatus("신규");
+    System.out.println();
 
     catList.add(c);
 
@@ -31,28 +33,25 @@ public class CatHandler {
   public void generalList() {
     System.out.println("[ 홈 > 메뉴 > 구조동물목록 > 고양이구조목록* ]");
     print();
-    int command = Prompt.inputInt("1: 뒤로가기 | 2: 홈\n>>");
+    int command = Prompt.inputInt("1: 뒤로가기 \n>>");
     switch (command) {
       case 1:
         break;
       default:
         break;
     }
-    System.out.println();
   }
 
   public void managerList() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 고양이구조목록* ]");
     print();
-    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 | 4: 홈\n>>");
+    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 \n>>");
     switch (command) {
       case 1:
         update();
         break;
       case 2:
         remove();
-        break;
-      case 3:
         break;
       default:
         break;

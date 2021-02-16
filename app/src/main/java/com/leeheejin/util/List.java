@@ -1,24 +1,20 @@
-package com.leeheejin.myproject.handler;
+package com.leeheejin.util;
 
-import com.leeheejin.myproject.domain.Cat;
-
-public class CatList {
-  Cat c = new Cat();
+public class List {
 
   private Node first;
   private Node last;
+  protected int size = 0; 
 
-  private int size = 0; 
-
-  public void add(Cat c) {
-    Node node = new Node(c);
+  public void add(Object obj) {
+    Node node = new Node(obj);
 
     if (last == null) {
       first = node;
       last = node;
     } else {
-      node.prev = last;
       last.next = node;
+      node.prev = last;
       last = node;
     }
     size++;

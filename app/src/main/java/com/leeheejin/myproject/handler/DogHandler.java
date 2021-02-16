@@ -1,11 +1,12 @@
 package com.leeheejin.myproject.handler;
 
 import com.leeheejin.myproject.domain.Dog;
+import com.leeheejin.util.List;
 import com.leeheejin.util.Prompt;
 
 public class DogHandler {
 
-  DogList dogList = new DogList();
+  List dogList = new List();
 
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규개등록* ]");
@@ -32,20 +33,19 @@ public class DogHandler {
   public void generalList() {
     System.out.println("[ 홈 > 메뉴 > 구조동물목록 > 개구조목록* ]");
     print();
-    int command = Prompt.inputInt("1: 뒤로가기 | 2: 홈\n>>");
+    int command = Prompt.inputInt("1: 뒤로가기 \n>>");
     switch (command) {
       case 1:
         break;
       default:
         break;
     }
-    System.out.println();
   }
 
   public void managerList() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 개구조목록* ]");
     print();
-    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 | 4: 홈\n>>");
+    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 \n>>");
     switch (command) {
       case 1:
         update();
