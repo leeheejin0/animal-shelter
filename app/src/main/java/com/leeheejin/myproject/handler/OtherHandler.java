@@ -1,12 +1,12 @@
 package com.leeheejin.myproject.handler;
 
+import java.util.LinkedList;
 import com.leeheejin.myproject.domain.Other;
-import com.leeheejin.util.List;
 import com.leeheejin.util.Prompt;
 
 public class OtherHandler {
 
-  List otherList = new List();
+  LinkedList<Other> otherList = new LinkedList<>();
 
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규기타동물등록* ]");
@@ -104,7 +104,7 @@ public class OtherHandler {
         otherList.remove(otherList.get(removeNo));
 
         for (int i = removeNo; i <= otherList.size(); i++) {
-          Other o = (Other) otherList.get(i);
+          Other o = otherList.get(i);
           o.setIds(o.getIds() - 1);
         }
         backToList("- <삭제완료>");
@@ -142,9 +142,8 @@ public class OtherHandler {
   }
 
   private Other findByNo(int otherNo) {
-    Object [] list = otherList.toArray();
-    for (Object obj : list) {
-      Other o = (Other) obj;
+    Other[] list = otherList.toArray(new Other[0]);
+    for (Other o : list) {
       if (o.getIds() == otherNo) {
         return o;
       }

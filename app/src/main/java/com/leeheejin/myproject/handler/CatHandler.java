@@ -1,12 +1,12 @@
 package com.leeheejin.myproject.handler;
 
+import java.util.LinkedList;
 import com.leeheejin.myproject.domain.Cat;
-import com.leeheejin.util.List;
 import com.leeheejin.util.Prompt;
 
 public class CatHandler {
 
-  List catList = new List();
+  LinkedList<Cat> catList = new LinkedList<>();
 
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규고양이등록* ]");
@@ -101,7 +101,7 @@ public class CatHandler {
 
         // 번호 바꾸기
         for (int i = removeNo; i <= catList.size(); i++) {
-          Cat c = (Cat) catList.get(i);
+          Cat c = catList.get(i);
           c.setIds(c.getIds() - 1);
         }
         backToList("- <삭제완료>");
@@ -140,9 +140,8 @@ public class CatHandler {
   }
 
   private Cat findByNo(int catNo) {
-    Object [] list = catList.toArray();
-    for (Object obj : list) {
-      Cat c = (Cat) obj;
+    Cat [] list = catList.toArray(new Cat[0]);
+    for (Cat c : list) {
       if (c.getIds() == catNo) {
         return c;
       }

@@ -1,12 +1,12 @@
 package com.leeheejin.myproject.handler;
 
+import java.util.LinkedList;
 import com.leeheejin.myproject.domain.Dog;
-import com.leeheejin.util.List;
 import com.leeheejin.util.Prompt;
 
 public class DogHandler {
 
-  List dogList = new List();
+  LinkedList<Dog> dogList = new LinkedList<>();
 
   public void add() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규개등록* ]");
@@ -102,7 +102,7 @@ public class DogHandler {
         dogList.remove(dogList.get(removeNo));
 
         for (int i = removeNo; i <= dogList.size(); i++) {
-          Dog d = (Dog) dogList.get(i);
+          Dog d = dogList.get(i);
           d.setIds(d.getIds() - 1);
         }
         backToList("- <삭제완료>");
@@ -140,9 +140,8 @@ public class DogHandler {
   }
 
   private Dog findByNo(int dogNo) {
-    Object [] list = dogList.toArray();
-    for (Object obj : list) {
-      Dog d = (Dog) obj;
+    Dog [] list = dogList.toArray(new Dog[0]);
+    for (Dog d : list) {
       if (d.getIds() == dogNo) {
         return d;
       }
