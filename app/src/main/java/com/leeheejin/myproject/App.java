@@ -1,14 +1,11 @@
 package com.leeheejin.myproject;
 
-import com.leeheejin.myproject.handler.MemberHandler;
 import com.leeheejin.myproject.handler.MenuHandler;
 import com.leeheejin.util.Prompt;
 
 public class App {
   public static void main(String[] args) {
-    //    BoardHandler boardList1 = new BoardHandler();
-    //    BoardHandler boardList2 = new BoardHandler();
-    //MemberHandler memberList = new MemberHandler();
+
     MenuHandler menuHandler = new MenuHandler();
 
     loop:
@@ -18,69 +15,31 @@ public class App {
         System.out.println("(1) 회원가입 / 로그인");
         System.out.println("(2) 비회원 둘러보기"); 
         System.out.println("(3) 시스템 종료"); 
-        int input = Prompt.inputInt(">> ");
-        switch (input) {
-          case 1:
-            System.out.println("[ 홈 > 회원가입/로그인* ]");
-            System.out.println("(1) 회원가입");
-            System.out.println("(2) 로그인"); 
-            System.out.println("(3) 뒤로가기"); 
-            int memberInput = Prompt.inputInt(">> ");
-            if (memberInput == 1) {
-              MemberHandler.signUp();
-            } else if (memberInput == 2) {
-              int menuNo = MemberHandler.logIn();
-              if (menuNo == 1) {
-                menuHandler.managerMenu();
-              }
-            } else if (memberInput == 3) {
+        int command = Prompt.inputInt(" >> ");
+        try {
+          switch (command) {
+            case 1:
+              menuHandler.logInMenu();
               break;
-            } else {
+            case 2:
+              menuHandler.generalMenu();
+              break;
+            case 3:
+              System.out.println("- 종료합니다. ");
+              break loop;
+            default:
               System.out.println("- 잘못 입력하셨습니다. ");
-            }
-            break;
-          case 2:
-            menuHandler.generalMenu();
-            break;
-          case 3:
-            System.out.println("- 종료합니다. ");
-            break loop;
-          default:
-            System.out.println("- 잘못 입력하셨습니다. ");
-            System.out.println();
-            break;
+              System.out.println();
+              break;
+          }
+        } catch (Exception e) {
+          System.out.println("---------------------");
+          System.out.println(" 잘못된 입력입니다. ");
+          System.out.printf("명령어 실행 중 오류 발생: %s - %s\n", 
+              e.getClass().getName(), e.getMessage());
+          System.out.println("---------------------");
         }
-        //    if (input == 1) {
-        //      System.out.println("[ 홈 > 회원가입/로그인* ]");
-        //      System.out.println("(1) 회원가입");
-        //      System.out.println("(2) 로그인"); 
-        //      System.out.println("(3) 뒤로가기"); 
-        //      int memberInput = Prompt.inputInt(">> ");
-        //      if (memberInput == 1) {
-        //        MemberHandler.signUp();
-        //      } else if (memberInput == 2) {
-        //        int command = MemberHandler.logIn();
-        //        switch (command) {
-        //          case 1: 
-        //            MenuHandler.managerMenu();
-        //            break;
-        //          default:
-        //            break;
-        //        }
-        //      } else if (memberInput == 3) {
-        //
-        //      }else {
-        //        System.out.println("- 잘못 입력하셨습니다. ");
-        //      }
-        //    } else if (input == 2) {
-        //      MenuHandler.generalMenu();
-        //    } else if (input == 3) {
-        //      System.out.println("- 종료합니다. ");
-        //      //
-        //    } else {
-        //      System.out.println("- 잘못 입력하셨습니다. ");
-        //    }
-        //    //Prompt.close();
+        System.out.println();
       }
   }
 }
