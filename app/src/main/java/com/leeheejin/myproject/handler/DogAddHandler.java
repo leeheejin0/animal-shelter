@@ -10,7 +10,8 @@ public class DogAddHandler extends AbstractDogHandler {
     super(dogList);
   }
 
-  public void add() {
+  @Override
+  public void service() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규개등록* ]");
     try {
       Dog d = new Dog();

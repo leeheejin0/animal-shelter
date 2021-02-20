@@ -10,7 +10,8 @@ public class CatAddHandler extends AbstractCatHandler {
     super(catList);
   }
 
-  public void add() {
+  @Override
+  public void service() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규고양이등록* ]");
 
     try {

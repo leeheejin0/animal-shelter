@@ -10,10 +10,15 @@ public class OtherListHandler extends AbstractOtherHandler {
     super(otherList);
   }
 
+  @Override
+  public void service() {
+
+  }
+
   public void generalList() {
     System.out.println("[ 홈 > 메뉴 > 구조동물목록 > 기타동물구조목록* ]");
     print();
-    int command = Prompt.inputInt("1: 뒤로가기 \n >>");
+    int command = Prompt.inputInt("1: 뒤로가기 \n>>");
     switch (command) {
       case 1:
         break;
@@ -25,7 +30,7 @@ public class OtherListHandler extends AbstractOtherHandler {
   public void managerList() {
     System.out.println("[ 홈 > 메뉴 > 구조동물목록 > 기타동물구조목록* ]");
     print();
-    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 \n >>");
+    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 \n>>");
     switch (command) {
       case 1:
         update();
@@ -48,7 +53,7 @@ public class OtherListHandler extends AbstractOtherHandler {
     if (updateNo <= otherList.size()) {
 
       print(updateNo - 1);
-      int updateStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n >>");
+      int updateStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n>>");
       String stateLabel = null;
       switch (updateStatus) {
         case 1:

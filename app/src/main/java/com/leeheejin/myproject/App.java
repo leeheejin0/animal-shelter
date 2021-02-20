@@ -15,7 +15,7 @@ public class App {
         System.out.println("(1) 회원가입 / 로그인");
         System.out.println("(2) 비회원 둘러보기"); 
         System.out.println("(3) 시스템 종료"); 
-        int command = Prompt.inputInt(" >> ");
+        int command = Prompt.inputInt(">> ");
         try {
           switch (command) {
             case 1:

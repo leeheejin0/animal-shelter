@@ -11,6 +11,11 @@ public class BoardAddHandler extends AbstractBoardHandler {
     super(boardList);
   }
 
+  @Override
+  public void service() {
+
+  }
+
   public void add(String menuName, String name) {
     System.out.printf("[ 홈 > %s > 게시판 > %s > 글쓰기* ]\n", menuName, name);
     try {

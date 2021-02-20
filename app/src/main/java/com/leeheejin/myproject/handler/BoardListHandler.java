@@ -12,6 +12,11 @@ public class BoardListHandler extends AbstractBoardHandler {
     super(boardList);
   }
 
+  @Override
+  public void service() {
+
+  }
+
   public void list(String menuName, String name) {
     System.out.printf("[ 홈 > %s > 게시판 > %s > 글목록* ]\n", menuName, name);
     Board[] list = boardList.toArray(new Board[boardList.size()]);

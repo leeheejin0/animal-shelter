@@ -7,9 +7,15 @@ import com.leeheejin.util.Prompt;
 public class MemberAccountHandler extends AbstractMemberHandler {
 
   static int logInAccount;
+  int accountRemove;
 
   public MemberAccountHandler(List<Member> memberList) {
     super(memberList);
+  }
+
+  @Override
+  public void service() {
+
   }
 
   public int logIn() {
@@ -68,23 +74,24 @@ public class MemberAccountHandler extends AbstractMemberHandler {
         System.out.println();
         break;
       case 2:
-        String dcommand = Prompt.inputString("- 삭제하시겠습니까?(y/N) ");
+        String dcommand = Prompt.inputString("- 회원정보를 삭제하시겠습니까?(y/N) ");
         if (dcommand.isEmpty() || dcommand.equalsIgnoreCase("n")) {
-          return;
+          System.out.println("- 회원정보 삭제가 취소되었습니다. ");
+          System.out.println();
+          break;
         } else if (dcommand.equalsIgnoreCase("y")) {
           memberList.remove(m);
           System.out.println("- 회원정보가 삭제되었습니다. ");
           System.out.println();
-          //return;
-          //로그인 전 홈으로 돌아가기
+          accountRemove = -1;
         } else {
           System.out.println("- 잘못 입력하셨습니다. ");
           System.out.println();
-          break;
         }
         break;
-      default:
+      case 3:
         break;
     }
   }
 }
+

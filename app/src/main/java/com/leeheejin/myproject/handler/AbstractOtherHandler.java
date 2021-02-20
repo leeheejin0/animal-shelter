@@ -3,7 +3,7 @@ package com.leeheejin.myproject.handler;
 import java.util.List;
 import com.leeheejin.myproject.domain.Other;
 
-public abstract class AbstractOtherHandler {
+public abstract class AbstractOtherHandler implements Command {
 
   protected List<Other> otherList;
 

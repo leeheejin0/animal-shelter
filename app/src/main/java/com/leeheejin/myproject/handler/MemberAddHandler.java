@@ -11,7 +11,8 @@ public class MemberAddHandler extends AbstractMemberHandler {
     super(memberList);
   }
 
-  public void signUp() {
+  @Override
+  public void service() {
     System.out.println("[ 홈 > 회원가입* ]");
     try {
       Member m = new Member();

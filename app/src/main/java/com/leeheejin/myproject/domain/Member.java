@@ -11,6 +11,7 @@ public class Member {
   private String password;
   private Date registeredDate;
 
+
   public int getNo() {
     return no;
   }

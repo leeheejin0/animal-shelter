@@ -3,7 +3,7 @@ package com.leeheejin.myproject.handler;
 import java.util.List;
 import com.leeheejin.myproject.domain.Board;
 
-public abstract class AbstractBoardHandler {
+public abstract class AbstractBoardHandler implements Command {
 
   protected List<Board> boardList;
 

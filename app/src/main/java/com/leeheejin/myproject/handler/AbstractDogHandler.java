@@ -3,7 +3,7 @@ package com.leeheejin.myproject.handler;
 import java.util.List;
 import com.leeheejin.myproject.domain.Dog;
 
-public abstract class AbstractDogHandler {
+public abstract class AbstractDogHandler implements Command {
 
   protected List<Dog> dogList;
 

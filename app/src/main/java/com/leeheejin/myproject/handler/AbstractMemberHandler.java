@@ -3,10 +3,10 @@ package com.leeheejin.myproject.handler;
 import java.util.List;
 import com.leeheejin.myproject.domain.Member;
 
-public abstract class AbstractMemberHandler {
+public abstract class AbstractMemberHandler implements Command {
 
   protected List<Member> memberList;
-  int nowLogIn = -1;
+  protected int nowLogIn = -1;
 
   public AbstractMemberHandler(List<Member> memberList) {
     this.memberList = memberList;

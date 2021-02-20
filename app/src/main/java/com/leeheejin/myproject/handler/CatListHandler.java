@@ -10,10 +10,15 @@ public class CatListHandler extends AbstractCatHandler{
     super(catList);
   }
 
+  @Override
+  public void service() {
+
+  }
+
   public void generalList() {
     System.out.println("[ 홈 > 메뉴 > 구조동물목록 > 고양이구조목록* ]");
     print();
-    int command = Prompt.inputInt("1: 뒤로가기 \n >>");
+    int command = Prompt.inputInt("1: 뒤로가기 \n>>");
     switch (command) {
       case 1:
         break;
@@ -25,7 +30,7 @@ public class CatListHandler extends AbstractCatHandler{
   public void managerList() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 고양이구조목록* ]");
     print();
-    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 \n >>");
+    int command = Prompt.inputInt("1: 상태수정 | 2: 삭제 | 3: 뒤로가기 \n>>");
     switch (command) {
       case 1:
         update();
@@ -46,7 +51,7 @@ public class CatListHandler extends AbstractCatHandler{
     if (updateNo <= catList.size()) {
 
       print(updateNo - 1);
-      int updateStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n >>");
+      int updateStatus = Prompt.inputInt("1: 공고중 | 2: 입양완료\n>>");
       String stateLabel = null;
       switch (updateStatus) {
         case 1:

@@ -3,7 +3,7 @@ package com.leeheejin.myproject.handler;
 import java.util.List;
 import com.leeheejin.myproject.domain.Cat;
 
-public abstract class AbstractCatHandler {
+public abstract class AbstractCatHandler implements Command {
 
   protected List<Cat> catList;
 

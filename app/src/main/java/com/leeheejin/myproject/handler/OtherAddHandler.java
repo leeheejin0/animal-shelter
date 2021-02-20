@@ -10,7 +10,8 @@ public class OtherAddHandler extends AbstractOtherHandler {
     super(otherList);
   }
 
-  public void add() {
+  @Override
+  public void service() {
     System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록 > 신규기타동물등록* ]");
     try {
       Other o = new Other();
