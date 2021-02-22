@@ -21,12 +21,12 @@ public class BoardListHandler extends AbstractBoardHandler {
     System.out.printf("[ 홈 > %s > 게시판 > %s > 글목록* ]\n", menuName, name);
     Board[] list = boardList.toArray(new Board[boardList.size()]);
     for (Board b : list) {
-      System.out.printf("[%d] %s |%s| %s |%d|%d|\n", 
+      System.out.printf("(%d) %s |%s| %s |%d|%d|\n", 
           b.getNo(), b.getTitle(), b.getRegisteredDate(), b.getName(), 
           b.getViewCount(), b.getLike());
     }
 
-    int command = Prompt.inputInt("1: 상세보기 | 2: 검색 | 3: 뒤로가기\n >>");
+    int command = Prompt.inputInt("1: 상세보기 | 2: 검색 | 3: 뒤로가기\n>>");
     switch (command) {
       case 1:
         detail();
@@ -34,7 +34,11 @@ public class BoardListHandler extends AbstractBoardHandler {
       case 2:
         //search();
         break;
+      case 3:
+        return;
       default:
+        System.out.println("실행할 수 없는 명령입니다.");
+        System.out.println();
         break;
     }
   }
@@ -45,7 +49,7 @@ public class BoardListHandler extends AbstractBoardHandler {
       Board b = boardList.get(detailNo - 1);
       b.setViewCount(b.getViewCount() + 1);
       System.out.println("==========================================================");
-      System.out.printf("[  %s  ]                %s | %s |\n", 
+      System.out.printf("<  %s  >                %s | %s |\n", 
           b.getTitle(), b.getName(), b.getRegisteredDate());
       System.out.println(" --------------------------------------------------------");
       System.out.printf("  %s\n", b.getContent());
@@ -53,7 +57,7 @@ public class BoardListHandler extends AbstractBoardHandler {
       System.out.printf("                              조회수 : %d | 좋아요 : %d |\n", 
           b.getViewCount(), b.getLike());
       System.out.println("==========================================================");
-      int command = Prompt.inputInt("1: 수정 | 2: 삭제 | 3: 뒤로가기\n >>");
+      int command = Prompt.inputInt("1: 수정 | 2: 삭제 | 3: 뒤로가기\n>> ");
       switch (command) {
         case 1:
           update(detailNo);
@@ -61,7 +65,11 @@ public class BoardListHandler extends AbstractBoardHandler {
         case 2:
           remove();
           break;
+        case 3:
+          return;
         default:
+          System.out.println("실행할 수 없는 명령입니다.");
+          System.out.println();
           break;
       }
     } else {
@@ -93,7 +101,7 @@ public class BoardListHandler extends AbstractBoardHandler {
     }
     //출력
     for (Board b : list) {
-      System.out.printf("[%d] %s |%s| %s |%d|%d|\n", 
+      System.out.printf("(%d) %s |%s| %s |%d|%d|\n", 
           b.getNo(), b.getTitle(), b.getRegisteredDate(), b.getName(), 
           b.getViewCount(), b.getLike());
     }
@@ -112,7 +120,7 @@ public class BoardListHandler extends AbstractBoardHandler {
         b.setRegisteredDate(new Date(System.currentTimeMillis()));
 
         System.out.println("==========================================================");
-        System.out.printf("[  %s  ]                %s | %s |\n", 
+        System.out.printf("<  %s  >                %s | %s |\n", 
             b.getTitle(), b.getName(), b.getRegisteredDate());
         System.out.println(" --------------------------------------------------------");
         System.out.printf("  %s\n", b.getContent());
@@ -131,7 +139,6 @@ public class BoardListHandler extends AbstractBoardHandler {
       System.out.println(" 잘못된 입력입니다. ");
       System.out.println("---------------------");
     }
-    System.out.println();
   }
 
 

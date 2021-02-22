@@ -26,7 +26,6 @@ public class OtherAddHandler extends AbstractOtherHandler {
       o.setDates(Prompt.inputDate("구조일? "));
       o.setPlaces(Prompt.inputString("구조장소? "));
       o.setStatus("신규");
-      System.out.println();
 
       otherList.add(o);
 
@@ -38,6 +37,5 @@ public class OtherAddHandler extends AbstractOtherHandler {
       System.out.println(" 잘못된 입력입니다. ");
       System.out.println("---------------------");
     }
-    System.out.println();
   }
 }

@@ -17,7 +17,7 @@ public abstract class AbstractCatHandler implements Command {
     for (Object obj : list) {
       Cat c = (Cat) obj;
 
-      System.out.printf("  [%d] %s   %s/%s/%d살   ", 
+      System.out.printf("  (%d) %s   %s/%s/%d살   ", 
           c.getIds(), c.getPhotos(), c.getBreeds(), c.getGenders(), c.getAges());
       System.out.printf("%s, %s, %s\n", c.getDates(), c.getPlaces(), c.getStatus());
     }
@@ -26,7 +26,7 @@ public abstract class AbstractCatHandler implements Command {
   protected void print(int printNo) {
     Object obj = catList.get(printNo);
     Cat c = (Cat) obj;
-    System.out.printf("  [%d] %s   %s/%s/%d살   ", 
+    System.out.printf("  (%d) %s   %s/%s/%d살   ", 
         c.getIds(), c.getPhotos(), c.getBreeds(), c.getGenders(), c.getAges());
     System.out.printf("%s, %s, %s\n", c.getDates(), c.getPlaces(), c.getStatus());
   }

@@ -26,7 +26,6 @@ public class CatAddHandler extends AbstractCatHandler {
       c.setDates(Prompt.inputDate("구조일? "));
       c.setPlaces(Prompt.inputString("구조장소? "));
       c.setStatus("신규");
-      System.out.println();
 
       catList.add(c);
 
@@ -37,6 +36,5 @@ public class CatAddHandler extends AbstractCatHandler {
       System.out.println(" 잘못된 입력입니다. ");
       System.out.println("---------------------");
     }
-    System.out.println();
   }
 }

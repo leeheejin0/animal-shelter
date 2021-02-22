@@ -27,7 +27,6 @@ public class MemberAddHandler extends AbstractMemberHandler {
       memberList.add(m);
 
       System.out.println("- 가입이 완료되었습니다. ");
-      System.out.println();
     } catch (Exception e) {
       System.out.println("---------------------");
       System.out.println(" 잘못된 입력입니다. ");

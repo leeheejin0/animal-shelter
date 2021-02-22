@@ -39,7 +39,6 @@ public class App {
               e.getClass().getName(), e.getMessage());
           System.out.println("---------------------");
         }
-        System.out.println();
       }
   }
 }

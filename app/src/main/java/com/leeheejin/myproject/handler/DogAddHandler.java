@@ -24,7 +24,6 @@ public class DogAddHandler extends AbstractDogHandler {
       d.setDates(Prompt.inputDate("구조일? "));
       d.setPlaces(Prompt.inputString("구조장소? "));
       d.setStatus("신규");
-      System.out.println();
 
       dogList.add(d);
 
@@ -36,6 +35,5 @@ public class DogAddHandler extends AbstractDogHandler {
       System.out.println(" 잘못된 입력입니다. ");
       System.out.println("---------------------");
     }
-    System.out.println();
   }
 }

@@ -16,7 +16,7 @@ public abstract class AbstractOtherHandler implements Command {
 
     for (Object obj : list) {
       Other o = (Other) obj;
-      System.out.printf("  [%d] %s / %s   ", o.getIds(), o.getSpecies(), o.getPhotos());
+      System.out.printf("  (%d) %s / %s   ", o.getIds(), o.getSpecies(), o.getPhotos());
       System.out.printf("%s/%s/%d살   ", o.getBreeds(), o.getGenders(), o.getAges());
       System.out.printf("%s, %s, %s\n", o.getDates(), o.getPlaces(), o.getStatus());
     }
@@ -25,7 +25,7 @@ public abstract class AbstractOtherHandler implements Command {
   protected void print(int printNo) {
     Object obj = otherList.get(printNo);
     Other o = (Other) obj;
-    System.out.printf("  [%d] %s / %s   ", o.getIds(), o.getSpecies(), o.getPhotos());
+    System.out.printf("  (%d) %s / %s   ", o.getIds(), o.getSpecies(), o.getPhotos());
     System.out.printf("%s/%s/%d살   ", o.getBreeds(), o.getGenders(), o.getAges());
     System.out.printf("%s, %s, %s\n", o.getDates(), o.getPlaces(), o.getStatus());
   }

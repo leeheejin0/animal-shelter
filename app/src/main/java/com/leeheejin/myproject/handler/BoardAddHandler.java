@@ -36,6 +36,5 @@ public class BoardAddHandler extends AbstractBoardHandler {
       System.out.println(" 잘못된 입력입니다. ");
       System.out.println("---------------------");
     }
-    System.out.println();
   }
 }

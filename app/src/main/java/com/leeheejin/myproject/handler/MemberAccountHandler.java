@@ -46,7 +46,7 @@ public class MemberAccountHandler extends AbstractMemberHandler {
         m.getId(), m.getPassword(), m.getName(), m.getEmail(), 
         m.getTel(), m.getRegisteredDate());
 
-    int command = Prompt.inputInt("1: 상태수정 | 2: 회원탈퇴 | 3: 뒤로가기\n >>");
+    int command = Prompt.inputInt("1: 상태수정 | 2: 회원탈퇴 | 3: 뒤로가기\n>> ");
     switch (command) {
       case 1:
         try {
@@ -65,13 +65,11 @@ public class MemberAccountHandler extends AbstractMemberHandler {
               m.getId(), m.getPassword(), m.getName(), m.getEmail(), 
               m.getTel(), m.getRegisteredDate());
           System.out.println("- 회원정보가 변경되었습니다. ");
-          System.out.println();
         } catch (Exception e) {
           System.out.println("---------------------");
           System.out.println(" 잘못된 입력입니다. ");
           System.out.println("---------------------");
         }
-        System.out.println();
         break;
       case 2:
         String dcommand = Prompt.inputString("- 회원정보를 삭제하시겠습니까?(y/N) ");
@@ -90,6 +88,10 @@ public class MemberAccountHandler extends AbstractMemberHandler {
         }
         break;
       case 3:
+        return;
+      default:
+        System.out.println("실행할 수 없는 명령입니다.");
+        System.out.println();
         break;
     }
   }
