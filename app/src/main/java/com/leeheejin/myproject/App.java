@@ -10,13 +10,14 @@ public class App {
 
     loop:
       while (true) {
-        System.out.println("< 동물 보호소 관리 시스템 >");
-        System.out.println("[ 홈* ]");
-        System.out.println("(1) 회원가입 / 로그인");
-        System.out.println("(2) 비회원 둘러보기"); 
-        System.out.println("(3) 시스템 종료"); 
-        int command = Prompt.inputInt(">> ");
         try {
+          System.out.println("< 동물 보호소 관리 시스템 >");
+          System.out.println("[ 홈* ]");
+          System.out.println("(1) 회원가입 / 로그인");
+          System.out.println("(2) 비회원 둘러보기"); 
+          System.out.println("(3) 시스템 종료"); 
+          int command = Prompt.inputInt(">> ");
+
           switch (command) {
             case 1:
               menuHandler.logInMenu();

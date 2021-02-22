@@ -18,19 +18,17 @@ public class MenuHandler {
   LinkedList<Dog> dogList = new LinkedList<>();
   LinkedList<Other> otherList = new LinkedList<>();
 
-  HashMap<String, Command> commandMap = new HashMap<>();
-
   BoardAddHandler boardAddHandler = new BoardAddHandler(boardList);
   BoardListHandler boardListHandler = new BoardListHandler(boardList);
 
   BoardAddHandler boardAddHandler2 = new BoardAddHandler(boardList2);
   BoardListHandler boardListHandler2 = new BoardListHandler(boardList2);
 
-  CatListHandler catListHandler = new CatListHandler(catList);
   DogListHandler dogListHandler = new DogListHandler(dogList);
   OtherListHandler otherListHandler = new OtherListHandler(otherList);
 
   public void logInMenu() {
+    HashMap<String, Command> commandMap = new HashMap<>();
 
     commandMap.put("1", new MemberAddHandler(memberList));
     MemberAccountHandler memberAccountHandler = new MemberAccountHandler(memberList);
@@ -134,30 +132,35 @@ public class MenuHandler {
   }
 
   public void generalListMenu() {
+    HashMap<String, Command> commandMap = new HashMap<>();
+
     loop: 
       while (true) {
+        commandMap.put("1", new CatGeneralListHandler(catList));
+
         System.out.println("[ 홈 > 메뉴 > 구조동물목록* ]");
         System.out.println("(1) 고양이 목록 보기");
         System.out.println("(2) 개 목록 보기"); 
         System.out.println("(3) 기타 동물 목록 보기");
         System.out.println("(4) 뒤로가기"); 
-        int command = Prompt.inputInt(">> ");
+        String command = Prompt.inputString(">> ");
         try {
           switch (command) {
-            case 1:
-              catListHandler.generalList();
-              break;
-            case 2:
+            case "2":
               dogListHandler.generalList();
               break;
-            case 3:
+            case "3":
               otherListHandler.generalList();
               break;
-            case 4:
+            case "4":
               break loop;
             default:
-              System.out.println("실행할 수 없는 명령입니다.");
-              System.out.println();
+              Command commandHandler = commandMap.get(command);
+              if (commandHandler == null) {
+                System.out.println("실행할 수 없는 명령입니다.");
+              } else {
+                commandHandler.service();
+              }
               break;
           }
         } catch (Exception e) {
@@ -169,34 +172,77 @@ public class MenuHandler {
   }
 
   public void managerListMenu() {
+    HashMap<String, Command> commandMap = new HashMap<>();
+
     loop:
       while (true) {
+        commandMap.put("2", new CatManagerListHandler(catList));
+
         System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록* ]");
         System.out.println("(1) 신규 등록");
         System.out.println("(2) 고양이 목록 보기");
         System.out.println("(3) 개 목록 보기"); 
         System.out.println("(4) 기타 동물 목록 보기");
         System.out.println("(5) 뒤로가기"); 
-        int command = Prompt.inputInt(">> ");
+        String command = Prompt.inputString(">> ");
         try {
           switch (command) {
-            case 1: 
+            case "1": 
               addAnimalMenu();
               break;
-            case 2:
-              catListHandler.managerList();
-              break;
-            case 3:
+            case "3":
               dogListHandler.managerList();
               break;
-            case 4:
+            case "4":
               otherListHandler.managerList();
               break;
-            case 5:
+            case "5":
               break loop;
             default:
-              System.out.println("실행할 수 없는 명령입니다.");
-              System.out.println();
+              Command commandHandler = commandMap.get(command);
+              if (commandHandler == null ) {
+                System.out.println("실행할 수 없는 명령입니다.");
+              } else {
+                commandHandler.service();
+              }
+              break;
+          }
+        } catch (Exception e) {
+          System.out.println("---------------------");
+          System.out.println(" 잘못된 입력입니다. ");
+          System.out.printf("명령어 실행 중 오류 발생: %s - %s\n", 
+              e.getClass().getName(), e.getMessage());
+          System.out.println("---------------------");
+        }
+      }
+  }
+
+  public void addAnimalMenu() {
+    HashMap<String, Command> commandMap = new HashMap<>();
+
+    loop:
+      while (true) {
+        commandMap.put("1", new CatAddHandler(catList));
+        commandMap.put("2", new DogAddHandler(dogList));
+        commandMap.put("3", new OtherAddHandler(otherList));
+
+        System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록* ]");
+        System.out.println("(1) 신규 고양이 등록");
+        System.out.println("(2) 신규 개 등록"); 
+        System.out.println("(3) 신규 기타동물 등록");
+        System.out.println("(4) 뒤로가기"); 
+        String command = Prompt.inputString(">> ");
+        try {
+          switch (command) {
+            case "4":
+              break loop;
+            default:
+              Command commandHandler = commandMap.get(command);
+              if (commandHandler == null) {
+                System.out.println("실행할 수 없는 명령입니다.");
+              } else {
+                commandHandler.service();
+              }
               break;
           }
         } catch (Exception e) {
@@ -205,37 +251,6 @@ public class MenuHandler {
           System.out.println("---------------------");
         }
       }
-  }
-
-  public void addAnimalMenu() {
-    commandMap.put("1", new CatAddHandler(catList));
-    commandMap.put("2", new DogAddHandler(dogList));
-    commandMap.put("3", new OtherAddHandler(otherList));
-
-    System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록* ]");
-    System.out.println("(1) 신규 고양이 등록");
-    System.out.println("(2) 신규 개 등록"); 
-    System.out.println("(3) 신규 기타동물 등록");
-    System.out.println("(4) 뒤로가기"); 
-    String command = Prompt.inputString(">> ");
-    try {
-      switch (command) {
-        case "4":
-          return;
-        default:
-          Command commandHandler = commandMap.get(command);
-          if (commandHandler == null) {
-            System.out.println("실행할 수 없는 명령입니다.");
-          } else {
-            commandHandler.service();
-          }
-          return;
-      }
-    } catch (Exception e) {
-      System.out.println("---------------------");
-      System.out.println(" 잘못된 입력입니다. ");
-      System.out.println("---------------------");
-    }
   }
 
   public void generalBoardMenu() {
@@ -300,60 +315,64 @@ public class MenuHandler {
   }
 
   public void board1(String menuName) {
-    System.out.printf("[ 홈 > %s > 게시판 > 입양이야기* ]\n", menuName);
-    System.out.println("(1) 게시글 등록");
-    System.out.println("(2) 게시글 목록");
-    System.out.println("(3) 뒤로가기");
-    int command = Prompt.inputInt(">> ");
-    try {
-      switch (command) {
-        case 1:
-          boardAddHandler.add(menuName, "입양이야기");
-          break;
-        case 2:
-          boardListHandler.list(menuName, "입양이야기");
-          break;
-        case 3:
-          return;
-        default:
-          System.out.println("실행할 수 없는 명령입니다.");
-          System.out.println();
-          break;
+    loop:
+      while (true) {
+        System.out.printf("[ 홈 > %s > 게시판 > 입양이야기* ]\n", menuName);
+        System.out.println("(1) 게시글 등록");
+        System.out.println("(2) 게시글 목록");
+        System.out.println("(3) 뒤로가기");
+        int command = Prompt.inputInt(">> ");
+        try {
+          switch (command) {
+            case 1:
+              boardAddHandler.add(menuName, "입양이야기");
+              break;
+            case 2:
+              boardListHandler.list(menuName, "입양이야기");
+              break;
+            case 3:
+              break loop;
+            default:
+              System.out.println("실행할 수 없는 명령입니다.");
+              System.out.println();
+              break;
+          }
+        } catch (Exception e) {
+          System.out.println("---------------------");
+          System.out.println(" 잘못된 입력입니다. ");
+          System.out.println("---------------------");
+        }
       }
-    } catch (Exception e) {
-      System.out.println("---------------------");
-      System.out.println(" 잘못된 입력입니다. ");
-      System.out.println("---------------------");
-    }
-
   }
 
   public void board2(String menuName) {
-    System.out.printf("[ 홈 > %s > 게시판 > 구조이야기* ]\n", menuName);
-    System.out.println("(1) 게시글 등록");
-    System.out.println("(2) 게시글 목록");
-    System.out.println("(3) 뒤로가기");
-    int command = Prompt.inputInt(">> ");
-    try {
-      switch (command) {
-        case 1:
-          boardAddHandler2.add(menuName, "구조이야기");
-          return;
-        case 2:
-          boardListHandler2.list(menuName, "구조이야기");
-          break;
-        case 3:
-          return;
-        default:
-          System.out.println("실행할 수 없는 명령입니다.");
-          System.out.println();
-          break;
+    loop:
+      while (true) {
+        System.out.printf("[ 홈 > %s > 게시판 > 구조이야기* ]\n", menuName);
+        System.out.println("(1) 게시글 등록");
+        System.out.println("(2) 게시글 목록");
+        System.out.println("(3) 뒤로가기");
+        int command = Prompt.inputInt(">> ");
+        try {
+          switch (command) {
+            case 1:
+              boardAddHandler2.add(menuName, "구조이야기");
+              break;
+            case 2:
+              boardListHandler2.list(menuName, "구조이야기");
+              break;
+            case 3:
+              break loop;
+            default:
+              System.out.println("실행할 수 없는 명령입니다.");
+              System.out.println();
+              break;
+          }
+        } catch (Exception e) {
+          System.out.println("---------------------");
+          System.out.println(" 잘못된 입력입니다. ");
+          System.out.println("---------------------");
+        }
       }
-    } catch (Exception e) {
-      System.out.println("---------------------");
-      System.out.println(" 잘못된 입력입니다. ");
-      System.out.println("---------------------");
-    }
   }
-
 }

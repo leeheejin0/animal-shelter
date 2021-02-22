@@ -16,7 +16,7 @@ public abstract class AbstractDogHandler implements Command {
 
     for (Object obj : list) {
       Dog d = (Dog) obj;
-      System.out.printf("  (%d) %s   %s/%s/%d살   ", 
+      System.out.printf("  [%d] %s   %s/%s/%d살   ", 
           d.getIds(), d.getPhotos(), d.getBreeds(), d.getGenders(), d.getAges());
       System.out.printf("%s, %s, %s\n", d.getDates(), d.getPlaces(), d.getStatus());
     }
@@ -25,7 +25,7 @@ public abstract class AbstractDogHandler implements Command {
   protected void print(int printNo) {
     Object obj = dogList.get(printNo);
     Dog d = (Dog) obj;
-    System.out.printf("  (%d) %s   %s/%s/%d살   ", 
+    System.out.printf("  [%d] %s   %s/%s/%d살   ", 
         d.getIds(), d.getPhotos(), d.getBreeds(), d.getGenders(), d.getAges());
     System.out.printf("%s, %s, %s\n", d.getDates(), d.getPlaces(), d.getStatus());
   }
