@@ -24,9 +24,6 @@ public class MenuHandler {
   BoardAddHandler boardAddHandler2 = new BoardAddHandler(boardList2);
   BoardListHandler boardListHandler2 = new BoardListHandler(boardList2);
 
-  DogListHandler dogListHandler = new DogListHandler(dogList);
-  OtherListHandler otherListHandler = new OtherListHandler(otherList);
-
   public void logInMenu() {
     HashMap<String, Command> commandMap = new HashMap<>();
 
@@ -137,6 +134,8 @@ public class MenuHandler {
     loop: 
       while (true) {
         commandMap.put("1", new CatGeneralListHandler(catList));
+        commandMap.put("2", new DogGeneralListHandler(dogList));
+        commandMap.put("3", new OtherGeneralListHandler(otherList));
 
         System.out.println("[ 홈 > 메뉴 > 구조동물목록* ]");
         System.out.println("(1) 고양이 목록 보기");
@@ -146,12 +145,6 @@ public class MenuHandler {
         String command = Prompt.inputString(">> ");
         try {
           switch (command) {
-            case "2":
-              dogListHandler.generalList();
-              break;
-            case "3":
-              otherListHandler.generalList();
-              break;
             case "4":
               break loop;
             default:
@@ -177,6 +170,8 @@ public class MenuHandler {
     loop:
       while (true) {
         commandMap.put("2", new CatManagerListHandler(catList));
+        commandMap.put("3", new DogManagerListHandler(dogList));
+        commandMap.put("4", new OtherManagerListHandler(otherList));
 
         System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록* ]");
         System.out.println("(1) 신규 등록");
@@ -189,12 +184,6 @@ public class MenuHandler {
           switch (command) {
             case "1": 
               addAnimalMenu();
-              break;
-            case "3":
-              dogListHandler.managerList();
-              break;
-            case "4":
-              otherListHandler.managerList();
               break;
             case "5":
               break loop;
