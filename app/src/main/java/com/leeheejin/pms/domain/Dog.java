@@ -1,8 +1,9 @@
 package com.leeheejin.pms.domain;
 
 import java.sql.Date;
+import com.leeheejin.util.CsvObject;
 
-public class Dog {
+public class Dog implements CsvObject {
   private int ids;
   private String photos;
   private String breeds;
@@ -11,6 +12,33 @@ public class Dog {
   private Date dates;
   private String places;
   private String status;
+
+  @Override
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%s,%d,%s,%s,%s",
+        this.getIds(),
+        this.getPhotos(),
+        this.getBreeds(),
+        this.getGenders(),
+        this.getAges(),
+        this.getDates().toString(),
+        this.getPlaces(),
+        this.getStatus());
+  }
+
+  public static Dog valueOfCsv(String csv) {
+    String[] fields = csv.split(",");
+    Dog d = new Dog();
+    d.setIds(Integer.parseInt(fields[0]));
+    d.setPhotos(fields[1]);
+    d.setBreeds(fields[2]);
+    d.setGenders(fields[3]);
+    d.setAges(Integer.parseInt(fields[4]));
+    d.setDates(Date.valueOf(fields[5]));
+    d.setPlaces(fields[6]);
+    d.setStatus(fields[7]);
+    return d;
+  }
 
   public int getIds() {
     return ids;

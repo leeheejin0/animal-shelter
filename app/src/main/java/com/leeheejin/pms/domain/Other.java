@@ -1,8 +1,9 @@
 package com.leeheejin.pms.domain;
 
 import java.sql.Date;
+import com.leeheejin.util.CsvObject;
 
-public class Other {
+public class Other implements CsvObject {
   private int ids;
   private String species;
   private String photos;
@@ -12,6 +13,35 @@ public class Other {
   private Date dates;
   private String places;
   private String status;
+
+  @Override
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%s,%s,%d,%s,%s,%s",
+        this.getIds(),
+        this.getSpecies(),
+        this.getPhotos(),
+        this.getBreeds(),
+        this.getGenders(),
+        this.getAges(),
+        this.getDates().toString(),
+        this.getPlaces(),
+        this.getStatus());
+  }
+
+  public static Other valueOfCsv(String csv) {
+    String[] fields = csv.split(",");
+    Other o = new Other();
+    o.setIds(Integer.parseInt(fields[0]));
+    o.setSpecies(fields[1]);
+    o.setPhotos(fields[2]);
+    o.setBreeds(fields[3]);
+    o.setGenders(fields[4]);
+    o.setAges(Integer.parseInt(fields[5]));
+    o.setDates(Date.valueOf(fields[6]));
+    o.setPlaces(fields[7]);
+    o.setStatus(fields[8]);
+    return o;
+  }
 
   public int getIds() {
     return ids;

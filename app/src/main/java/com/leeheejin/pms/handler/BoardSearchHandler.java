@@ -32,6 +32,7 @@ public class BoardSearchHandler extends AbstractBoardHandler {
 
     if (list.isEmpty()) {
       System.out.println("- 검색어에 해당하는 게시글이 없습니다. ");
+      System.out.println();
     }
     //출력
     for (Board b : list) {

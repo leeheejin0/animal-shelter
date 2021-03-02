@@ -18,9 +18,6 @@ public abstract class AbstractCatHandler implements Command {
   public void service(int no) {}
 
   @Override
-  public void service(String str) {}
-
-  @Override
   public void service(String str1, String str2) {}
 
   protected void print() {

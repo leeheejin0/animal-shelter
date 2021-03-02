@@ -1,30 +1,42 @@
 package com.leeheejin.pms.handler;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import com.leeheejin.pms.domain.Board;
 import com.leeheejin.pms.domain.Cat;
 import com.leeheejin.pms.domain.Dog;
 import com.leeheejin.pms.domain.Member;
 import com.leeheejin.pms.domain.Other;
+import com.leeheejin.util.CsvObject;
+import com.leeheejin.util.ObjectFactory;
 import com.leeheejin.util.Prompt;
 
 public class MenuHandler {
 
-  LinkedList<Member> memberList = new LinkedList<>();
-  LinkedList<Board> boardList = new LinkedList<>();
-  LinkedList<Board> boardList2 = new LinkedList<>();
-  LinkedList<Cat> catList = new LinkedList<>();
-  LinkedList<Dog> dogList = new LinkedList<>();
-  LinkedList<Other> otherList = new LinkedList<>();
+  static ArrayList<Member> memberList = new ArrayList<>();
+  static LinkedList<Board> boardList1 = new LinkedList<>();
+  static LinkedList<Board> boardList2 = new LinkedList<>();
+  static LinkedList<Cat> catList = new LinkedList<>();
+  static LinkedList<Dog> dogList = new LinkedList<>();
+  static LinkedList<Other> otherList = new LinkedList<>();
 
-  BoardAddHandler boardAddHandler = new BoardAddHandler(boardList);
-  BoardListHandler boardListHandler = new BoardListHandler(boardList);
-
-  BoardAddHandler boardAddHandler2 = new BoardAddHandler(boardList2);
-  BoardListHandler boardListHandler2 = new BoardListHandler(boardList2);
+  static File memberFile = new File("members.csv");
+  static File boardFile1 = new File("boards1.csv");
+  static File boardFile2 = new File("boards2.csv");
+  static File catFile = new File("cats.csv");
+  static File dogFile = new File("dogs.csv");
+  static File otherFile = new File("others.csv");
 
   public void logInMenu() {
+    loadObjects(memberFile, memberList, Member::valueOfCsv);
+
     HashMap<String, Command> commandMap = new HashMap<>();
 
     commandMap.put("1", new MemberAddHandler(memberList));
@@ -53,9 +65,14 @@ public class MenuHandler {
         }
         break;
     }
+    saveObjects(memberFile, memberList);
   }
 
   public void generalMenu() {
+    loadObjects(catFile, catList, Cat::valueOfCsv);
+    loadObjects(dogFile, dogList, Dog::valueOfCsv);
+    loadObjects(otherFile, otherList, Other::valueOfCsv);
+
     loop: 
       while (true) {
         System.out.println("[ 홈 > 메뉴* ]");
@@ -87,6 +104,9 @@ public class MenuHandler {
   }
 
   public void managerMenu() {
+    loadObjects(catFile, catList, Cat::valueOfCsv);
+    loadObjects(dogFile, dogList, Dog::valueOfCsv);
+    loadObjects(otherFile, otherList, Other::valueOfCsv);
 
     MemberAccountHandler memberAccountHandler = new MemberAccountHandler(memberList);
 
@@ -129,6 +149,7 @@ public class MenuHandler {
   }
 
   public void generalListMenu() {
+
     HashMap<String, Command> commandMap = new HashMap<>();
 
     loop: 
@@ -165,6 +186,7 @@ public class MenuHandler {
   }
 
   public void managerListMenu() {
+
     HashMap<String, Command> commandMap = new HashMap<>();
 
     loop:
@@ -240,6 +262,9 @@ public class MenuHandler {
           System.out.println("---------------------");
         }
       }
+    saveObjects(catFile, catList);
+    saveObjects(dogFile, dogList);
+    saveObjects(otherFile, otherList);
   }
 
   public void generalBoardMenu() {
@@ -304,11 +329,13 @@ public class MenuHandler {
   }
 
   public void board1(String menuName) {
+    loadObjects(boardFile1, boardList1, Board::valueOfCsv);
+
     HashMap<String, Command> commandMap = new HashMap<>();
     loop:
       while (true) {
-        commandMap.put("1", new BoardAddHandler(boardList));
-        commandMap.put("2", new BoardListHandler(boardList));
+        commandMap.put("1", new BoardAddHandler(boardList1));
+        commandMap.put("2", new BoardListHandler(boardList1));
 
         System.out.printf("[ 홈 > %s > 게시판 > 입양이야기* ]\n", menuName);
         System.out.println("(1) 게시글 등록");
@@ -334,14 +361,18 @@ public class MenuHandler {
           System.out.println("---------------------");
         }
       }
+
+    saveObjects(boardFile1, boardList1);
   }
 
   public void board2(String menuName) {
+    loadObjects(boardFile2, boardList2,Board::valueOfCsv);
+
     HashMap<String, Command> commandMap = new HashMap<>();
     loop:
       while (true) {
-        commandMap.put("1", new BoardAddHandler(boardList));
-        commandMap.put("2", new BoardListHandler(boardList));
+        commandMap.put("1", new BoardAddHandler(boardList2));
+        commandMap.put("2", new BoardListHandler(boardList2));
 
         System.out.printf("[ 홈 > %s > 게시판 > 구조이야기* ]\n", menuName);
         System.out.println("(1) 게시글 등록");
@@ -367,5 +398,30 @@ public class MenuHandler {
           System.out.println("---------------------");
         }
       }
+
+    saveObjects(boardFile2, boardList2);
+  }
+
+  static <T> void loadObjects(File file, List<T> list, ObjectFactory<T> objectFactory) {
+    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
+      String csvStr = null;
+      while ((csvStr = in.readLine()) != null) {
+        list.add(objectFactory.create(csvStr));
+      }
+      System.out.printf("%s 파일 데이터 로딩!\n", file.getName());
+    } catch (Exception e) {
+      System.out.printf("%s 파일 데이터 로딩 중 오류 발생!\n", file.getName());
+    }
+  }
+
+  static <T extends CsvObject> void saveObjects(File file, List<T> list) {
+    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))){
+      for (CsvObject csvObj : list){
+        out.write(csvObj.toCsvString() + "\n");
+      }
+      System.out.printf("파일 %s 데이터 저장!\n", file.getName());
+    } catch (Exception e) {
+      System.out.printf("파일 %s에 데이터를 저장하는 중에 오류 발생!\n", file.getName());
+    }
   }
 }

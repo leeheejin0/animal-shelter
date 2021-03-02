@@ -1,8 +1,9 @@
 package com.leeheejin.pms.domain;
 
 import java.sql.Date;
+import com.leeheejin.util.CsvObject;
 
-public class Board {
+public class Board implements CsvObject {
   private int no;
   private String name;
   private int password;
@@ -11,6 +12,32 @@ public class Board {
   private Date registeredDate;
   private int viewCount;
   private int like;
+
+  public String toCsvString() {
+    return String.format("%d,%s,%s,%s,%s,%s,%s",
+        this.getNo(),
+        this.getName(),
+        this.getPassword(),
+        this.getTitle(),
+        this.getContent(),
+        this.getRegisteredDate().toString(),
+        this.getViewCount(),
+        this.getLike());
+  }
+
+  public static Board valueOfCsv(String csv) {
+    String[] fields = csv.split(",");
+    Board b = new Board();
+    b.setNo(Integer.parseInt(fields[0]));
+    b.setName(fields[1]);
+    b.setPassword(Integer.parseInt(fields[2]));
+    b.setTitle(fields[3]);
+    b.setContent(fields[4]);
+    b.setRegisteredDate(Date.valueOf(fields[5]));
+    b.setViewCount(Integer.parseInt(fields[6]));
+    b.setLike(Integer.parseInt(fields[7]));
+    return b;
+  }
 
   public int getNo() {
     return no;
