@@ -7,7 +7,7 @@ import com.leeheejin.util.Prompt;
 public class MemberAccountHandler extends AbstractMemberHandler {
 
   static int logInAccount;
-  int accountRemove;
+  public int accountRemove;
 
   public MemberAccountHandler(List<Member> memberList) {
     super(memberList);
