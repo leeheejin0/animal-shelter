@@ -30,6 +30,8 @@ public class BoardAddHandler extends AbstractBoardHandler {
     } catch (Exception e) {
       System.out.println("---------------------");
       System.out.println(" 잘못된 입력입니다. ");
+      System.out.printf("명령어 실행 중 오류 발생: %s - %s\n", 
+          e.getClass().getName(), e.getMessage());
       System.out.println("---------------------");
     }
   }

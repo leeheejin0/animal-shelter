@@ -1,14 +1,10 @@
 package com.leeheejin.pms;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import com.leeheejin.context.ApplicationContextListener;
 import com.leeheejin.pms.domain.Board;
 import com.leeheejin.pms.domain.Cat;
 import com.leeheejin.pms.domain.Dog;
@@ -23,37 +19,43 @@ import com.leeheejin.pms.handler.Command;
 import com.leeheejin.pms.handler.DogAddHandler;
 import com.leeheejin.pms.handler.DogGeneralListHandler;
 import com.leeheejin.pms.handler.DogManagerListHandler;
-import com.leeheejin.pms.handler.MemberAccountHandler;
 import com.leeheejin.pms.handler.MemberAddHandler;
+import com.leeheejin.pms.handler.MemberLogInHandler;
+import com.leeheejin.pms.handler.MemberUpdateHandler;
 import com.leeheejin.pms.handler.OtherAddHandler;
 import com.leeheejin.pms.handler.OtherGeneralListHandler;
 import com.leeheejin.pms.handler.OtherManagerListHandler;
-import com.leeheejin.util.CsvObject;
-import com.leeheejin.util.ObjectFactory;
+import com.leeheejin.pms.listener.AppListener;
+import com.leeheejin.pms.listener.FileListener;
 import com.leeheejin.util.Prompt;
 
 public class App01 {
-  static ArrayList<Member> memberList = new ArrayList<>();
-  static LinkedList<Board> boardList1 = new LinkedList<>();
-  static LinkedList<Board> boardList2 = new LinkedList<>();
-  static LinkedList<Cat> catList = new LinkedList<>();
-  static LinkedList<Dog> dogList = new LinkedList<>();
-  static LinkedList<Other> otherList = new LinkedList<>();
 
-  static File memberFile = new File("members.csv");
-  static File boardFile1 = new File("boards1.csv");
-  static File boardFile2 = new File("boards2.csv");
-  static File catFile = new File("cats.csv");
-  static File dogFile = new File("dogs.csv");
-  static File otherFile = new File("others.csv");
+  List<ApplicationContextListener> listeners = new ArrayList<>();
+
+  Map<String, Object> appContext = new HashMap<>();
 
   public static void main(String[] args) {
-    loadObjects(memberFile, memberList, Member::valueOfCsv);
-    loadObjects(catFile, catList, Cat::valueOfCsv);
-    loadObjects(dogFile, dogList, Dog::valueOfCsv);
-    loadObjects(otherFile, otherList, Other::valueOfCsv);
-    loadObjects(boardFile1, boardList1, Board::valueOfCsv);
-    loadObjects(boardFile2, boardList2,Board::valueOfCsv);
+    App01 app = new App01();
+
+    app.addApplicationContextListener(new AppListener());
+    app.addApplicationContextListener(new FileListener());
+
+    app.service();
+  }
+
+  public void addApplicationContextListener(ApplicationContextListener listener) {
+    listeners.add(listener);
+  }
+
+  public void removeApplicationContextListener(ApplicationContextListener listener) {
+    listeners.remove(listener);
+  }
+
+
+  public void service() {
+
+    notifyOnServiceStarted();
 
     loop:
       while (true) {
@@ -89,19 +91,32 @@ public class App01 {
         }
       }
 
-    saveObjects(memberFile, memberList);
-    saveObjects(catFile, catList);
-    saveObjects(dogFile, dogList);
-    saveObjects(otherFile, otherList);
-    saveObjects(boardFile1, boardList1);
-    saveObjects(boardFile2, boardList2);
+    notifyOnServiceStopped();
   }
 
-  public static void logInMenu() {
+  private void notifyOnServiceStarted() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextInitialized(appContext);
+    }
+  }
+
+  private void notifyOnServiceStopped() {
+    for (ApplicationContextListener listener : listeners) {
+      listener.contextDestroyed(appContext);
+    }
+  }
+
+
+
+
+  @SuppressWarnings("unchecked")
+  public void logInMenu() {
+    List<Member> memberList = (List<Member>) appContext.get("memberList");
+
     HashMap<String, Command> commandMap = new HashMap<>();
 
     commandMap.put("1", new MemberAddHandler(memberList));
-    MemberAccountHandler memberAccountHandler = new MemberAccountHandler(memberList);
+    MemberLogInHandler memberLogInHandler = new MemberLogInHandler(memberList);
 
     System.out.println("[ 홈 > 회원가입/로그인* ]");
     System.out.println("(1) 회원가입");
@@ -110,7 +125,7 @@ public class App01 {
     String command = Prompt.inputString(">> ");
     switch (command) {
       case "2":
-        if (memberAccountHandler.logIn() == 1) {
+        if (memberLogInHandler.logIn() == 1) {
           managerMenu();
         }
         break;
@@ -129,13 +144,14 @@ public class App01 {
 
   }
 
-  public static void generalMenu() {
+  public void generalMenu() {
     loop: 
       while (true) {
         System.out.println("[ 홈 > 메뉴* ]");
         System.out.println("(1) 구조 동물 목록");
         System.out.println("(2) 게시판");
-        System.out.println("(3) 뒤로가기");
+        System.out.println("(3) 보호소 후원");
+        System.out.println("(4) 뒤로가기");
         int command = Prompt.inputInt(">> ");
         try {
           switch (command) {
@@ -146,6 +162,8 @@ public class App01 {
               generalBoardMenu();
               break;
             case 3:
+              // 보호소 후원페이지 예정
+            case 4:
               break loop;
             default:
               System.out.println("실행할 수 없는 명령입니다.");
@@ -160,37 +178,49 @@ public class App01 {
       }
   }
 
-  public static void managerMenu() {
-    MemberAccountHandler memberAccountHandler = new MemberAccountHandler(memberList);
+  @SuppressWarnings("unchecked")
+  public void managerMenu() {
+    List<Member> memberList = (List<Member>) appContext.get("memberList");
+
+    HashMap<String, Command> commandMap = new HashMap<>();
 
     loop:
       while (true) {
+        commandMap.put("1", new MemberUpdateHandler(memberList));
+
         System.out.println("[ 홈 > 관리자 메뉴* ]");
         System.out.println("(1) 회원정보수정");
         System.out.println("(2) 로그아웃"); 
         System.out.println("(3) 구조 동물 목록");
         System.out.println("(4) 게시판");
-        int command = Prompt.inputInt(">> ");
+        System.out.println("(5) 보호소 후원");
+        String command = Prompt.inputString(">> ");
         try {
           switch (command) {
-            case 1:
-              memberAccountHandler.updateInfo();
-              if (memberAccountHandler.accountRemove == -1) {
-                break loop;
-              }
-              break;
-            case 2:
+            case "2":
               System.out.println("- 로그아웃 되었습니다. \n");
               break loop;
-            case 3:
+            case "3":
               managerListMenu();
               break;
-            case 4:
+            case "4":
               managerBoardMenu();
               break;
+            case "5":
+              //보호소 후원 관리 메뉴 예정
+              break;
             default:
-              System.out.println("실행할 수 없는 명령입니다.");
-              System.out.println();
+              Command commandHandler = commandMap.get(command);
+              if (commandHandler == null) {
+                System.out.println("실행할 수 없는 명령입니다.");
+              } else {
+                commandHandler.service();
+                if (command.equals("1")) {
+                  if (MemberUpdateHandler.accountRemove == -1) {
+                    break loop;
+                  }
+                }
+              }
               break;
           }
         } catch (Exception e) {
@@ -201,7 +231,11 @@ public class App01 {
       }
   }
 
-  public static void generalListMenu() {
+  @SuppressWarnings("unchecked")
+  public void generalListMenu() {
+    List<Cat> catList = (List<Cat>) appContext.get("catList");
+    List<Dog> dogList = (List<Dog>) appContext.get("dogList");
+    List<Other> otherList = (List<Other>) appContext.get("otherList");
 
     HashMap<String, Command> commandMap = new HashMap<>();
 
@@ -238,7 +272,11 @@ public class App01 {
       }
   }
 
-  public static void managerListMenu() {
+  @SuppressWarnings("unchecked")
+  public void managerListMenu() {
+    List<Cat> catList = (List<Cat>) appContext.get("catList");
+    List<Dog> dogList = (List<Dog>) appContext.get("dogList");
+    List<Other> otherList = (List<Other>) appContext.get("otherList");
 
     HashMap<String, Command> commandMap = new HashMap<>();
 
@@ -281,7 +319,12 @@ public class App01 {
       }
   }
 
-  public static void addAnimalMenu() {
+  @SuppressWarnings("unchecked")
+  public void addAnimalMenu() {
+    List<Cat> catList = (List<Cat>) appContext.get("catList");
+    List<Dog> dogList = (List<Dog>) appContext.get("dogList");
+    List<Other> otherList = (List<Other>) appContext.get("otherList");
+
     HashMap<String, Command> commandMap = new HashMap<>();
 
     loop:
@@ -289,6 +332,7 @@ public class App01 {
         commandMap.put("1", new CatAddHandler(catList));
         commandMap.put("2", new DogAddHandler(dogList));
         commandMap.put("3", new OtherAddHandler(otherList));
+
 
         System.out.println("[ 홈 > 관리자 메뉴 > 구조동물목록 > 신규등록* ]");
         System.out.println("(1) 신규 고양이 등록");
@@ -318,7 +362,7 @@ public class App01 {
 
   }
 
-  public static void generalBoardMenu() {
+  public void generalBoardMenu() {
     loop:
       while (true) {
         System.out.println("[ 홈 > 메뉴 > 게시판* ]");
@@ -343,12 +387,14 @@ public class App01 {
         } catch (Exception e) {
           System.out.println("---------------------");
           System.out.println(" 잘못된 입력입니다. ");
+          System.out.printf("명령어 실행 중 오류 발생: %s - %s\n", 
+              e.getClass().getName(), e.getMessage());
           System.out.println("---------------------");
         }
       }
   }
 
-  public static void managerBoardMenu() {
+  public void managerBoardMenu() {
     loop:
       while (true) {
         System.out.println("[ 홈 > 관리자 메뉴 > 게시판* ]");
@@ -374,12 +420,16 @@ public class App01 {
         } catch (Exception e) {
           System.out.println("---------------------");
           System.out.println(" 잘못된 입력입니다. ");
+          System.out.printf("명령어 실행 중 오류 발생: %s - %s\n", 
+              e.getClass().getName(), e.getMessage());
           System.out.println("---------------------");
         }
       }
   }
 
-  public static void board1(String menuName) {
+  @SuppressWarnings("unchecked")
+  public void board1(String menuName) {
+    List<Board> boardList1 = (List<Board>) appContext.get("boardList1");
 
     HashMap<String, Command> commandMap = new HashMap<>();
     loop:
@@ -408,6 +458,8 @@ public class App01 {
         } catch (Exception e) {
           System.out.println("---------------------");
           System.out.println(" 잘못된 입력입니다. ");
+          System.out.printf("명령어 실행 중 오류 발생: %s - %s\n", 
+              e.getClass().getName(), e.getMessage());
           System.out.println("---------------------");
         }
       }
@@ -415,8 +467,9 @@ public class App01 {
 
   }
 
-  public static void board2(String menuName) {
-
+  @SuppressWarnings("unchecked")
+  public void board2(String menuName) {
+    List<Board> boardList2 = (List<Board>) appContext.get("boardLsit2");
 
     HashMap<String, Command> commandMap = new HashMap<>();
     loop:
@@ -445,32 +498,11 @@ public class App01 {
         } catch (Exception e) {
           System.out.println("---------------------");
           System.out.println(" 잘못된 입력입니다. ");
+          System.out.printf("명령어 실행 중 오류 발생: %s - %s\n", 
+              e.getClass().getName(), e.getMessage());
           System.out.println("---------------------");
         }
       }
-  }
-
-  static <T> void loadObjects(File file, List<T> list, ObjectFactory<T> objectFactory) {
-    try (BufferedReader in = new BufferedReader(new FileReader(file))) {
-      String csvStr = null;
-      while ((csvStr = in.readLine()) != null) {
-        list.add(objectFactory.create(csvStr));
-      }
-      System.out.printf("%s 파일 데이터 로딩!\n", file.getName());
-    } catch (Exception e) {
-      System.out.printf("%s 파일 데이터 로딩 중 오류 발생!\n", file.getName());
-    }
-  }
-
-  static <T extends CsvObject> void saveObjects(File file, List<T> list) {
-    try (BufferedWriter out = new BufferedWriter(new FileWriter(file))){
-      for (CsvObject csvObj : list){
-        out.write(csvObj.toCsvString() + "\n");
-      }
-      System.out.printf("파일 %s 데이터 저장!\n", file.getName());
-    } catch (Exception e) {
-      System.out.printf("파일 %s에 데이터를 저장하는 중에 오류 발생!\n", file.getName());
-    }
   }
 }
 

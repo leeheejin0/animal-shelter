@@ -7,6 +7,8 @@ public abstract class AbstractMemberHandler implements Command {
 
   protected List<Member> memberList;
   protected int nowLogIn = -1;
+  static int logInAccount;
+  public static int accountRemove;
 
   public AbstractMemberHandler(List<Member> memberList) {
     this.memberList = memberList;
